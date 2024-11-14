@@ -15,7 +15,18 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="container mt-5">
+<div class="container mt-5" id="app">
+    <div v-if="loader === true" class="d-flex loader">
+        <section>
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only visually-hidden">Loading...</span>
+                </div>
+              </div>
+              
+            Cargando...
+        </section>
+    </div>
     <h2 class="text-center mb-4">Registro de Productos</h2>
     <form>
         <div class="form-row">

@@ -1,34 +1,24 @@
-// services/categoryService.js
-const { Category } = require('../models/Category');
+const CategoryRepository = require('../repositories/CategoryRepository');
 
 class CategoryService {
-  async createCategory(data) {
-    return await Category.create(data);
+  async getAllCategories() {
+    return await CategoryRepository.getAllCategories();
   }
 
   async getCategoryById(id) {
-    return await Category.findByPk(id);
+    return await CategoryRepository.getCategoryById(id);
   }
 
-  async getAllCategories() {
-    return await Category.findAll();
+  async createCategory(category) {
+    return await CategoryRepository.createCategory(category);
   }
 
-  async updateCategory(id, data) {
-    const category = await Category.findByPk(id);
-    if (category) {
-      return await category.update(data);
-    }
-    return null;
+  async updateCategory(id, category) {
+    return await CategoryRepository.updateCategory(id, category);
   }
 
   async deleteCategory(id) {
-    const category = await Category.findByPk(id);
-    if (category) {
-      await category.destroy();
-      return true;
-    }
-    return false;
+    return await CategoryRepository.deleteCategory(id);
   }
 }
 
