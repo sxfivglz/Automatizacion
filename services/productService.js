@@ -1,28 +1,28 @@
-// services/productService.js
-const { Product } = require('../models/Product');
-const { Category } = require('../models/Category');
-const { CategoryProduct } = require('../models/CategoryProduct');
-
+const ProductRepository = require('../repositories/ProductRepository');
 
 class ProductService {
-  async createProduct(product) {
-    return await Product.create(product);
+  async getAllProducts() {
+    return await ProductRepository.allProducts();
   }
 
-  async getProducts() {
-    return await Product.findAll();
+  async getProductsByCategory(categoryId) {
+    return await ProductRepository.getProductsByCategory(categoryId);
   }
 
   async getProductById(id) {
-    return await Product.findByPk(id);
+    return await ProductRepository.getProductById(id);
+  }
+
+  async createProduct(product) {
+    return await ProductRepository.createProduct(product);
   }
 
   async updateProduct(id, product) {
-    return await Product.update(product, { where: { id } });
+    return await ProductRepository.updateProduct(id, product);
   }
 
   async deleteProduct(id) {
-    return await Product.destroy({ where: { id } });
+    return await ProductRepository.deleteProduct(id);
   }
 }
 

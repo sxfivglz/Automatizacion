@@ -1,17 +1,70 @@
-// models/Product.js
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('../config/database').sequelize;
+const { DataTypes } = require('sequelize');
+const initializeDatabase = require('../config/database'); // Asegúrate de que esta ruta sea correcta
+const Category = require('./Category');
 
-class Product extends Model {}
 
-Product.init(
-  {
-    name: { type: DataTypes.STRING, allowNull: false },
-    price: { type: DataTypes.FLOAT, allowNull: false },
-    description: { type: DataTypes.STRING, allowNull: true },
-    stock: { type: DataTypes.INTEGER, allowNull: false },
+const Product = async () => {
+  
+      const sequelize = await initializeDatabase();
+  
+      const Product = sequelize.define('Product', {
+          name: {
+              type: DataTypes.STRING,
+              allowNull: false,
+          },
+          price: {
+              type: DataTypes.DECIMAL(10, 2),
+              allowNull: false,
+          },
+          stock: {
+              type: DataTypes.INTEGER,
+              allowNull: false,
+          },
+          category_fk: {
+              type: DataTypes.INTEGER,
+              references: {
+                  model: Category,
+                  key: 'id',
+              },
+          },
+      }, {
+          timestamps: false,
+          tableName: 'products',
+      });
+  
+      Product.belongsTo(Category, { foreignKey: 'category_fk' });
+      Category.hasMany(Product, { foreignKey: 'category_fk' });
+  
+      return Product;
+};
+
+/*
+const Product = sequelize.define('Product', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
-  { sequelize, modelName: 'Product' }
-);
+  price: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+  },
+  stock: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  category_fk: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Category,
+      key: 'id',
+    },
+  },
+}, {
+  timestamps: false,
+  tableName: 'products',
+});
 
-module.exports = Product;
+Product.belongsTo(Category, { foreignKey: 'category_fk' });
+Category.hasMany(Product, { foreignKey: 'category_fk' });
+
+module.exports = Product;*/

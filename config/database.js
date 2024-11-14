@@ -1,34 +1,16 @@
-const { Sequelize } = require('sequelize');
 require('dotenv').config();
+const { Sequelize } = require('sequelize');
 
-class Database {
-  constructor() {
-    if (!Database.instance) {
-      this.sequelize = new Sequelize(
-        process.env.DB_NAME,
-        process.env.DB_USER,
-        process.env.DB_PASS, // Cambia este nombre de variable si es necesario
-        {
-          host: process.env.DB_HOST,
-          port: process.env.DB_PORT, // El puerto se debe pasar aquí
-          dialect: 'mysql',
-        }
-      );
-      Database.instance = this;
-    }
-    return Database.instance;
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: 'mysql',
+    logging: false,
   }
+);
 
-  async connect() {
-    try {
-      await this.sequelize.authenticate();
-      console.log('Conexión a la base de datos exitosa.');
-    } catch (error) {
-      console.error('Error al conectar a la base de datos:', error);
-    }
-  }
-}
-
-const instance = new Database();
-Object.freeze(instance);
-module.exports = instance;
+module.exports = sequelize;

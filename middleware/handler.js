@@ -1,6 +1,3 @@
-// handler.js
-
-// Middleware para manejar errores generales y excepciones no capturadas
 function errorHandler(err, req, res, next) {
     console.error('Error:', err.stack);  // Log detallado del error en la consola
   
