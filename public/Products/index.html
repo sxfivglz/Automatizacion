@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-    <!-- Vue -->
-    <script src="https://unpkg.com/vue@3.5.11/dist/vue.runtime.global.js"></script>
-    <script src="https://unpkg.com/vue@3.5.11/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@3.5.11/dist/vue.global.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -20,23 +18,21 @@
         <section>
             <div class="d-flex justify-content-center">
                 <div class="spinner-border" role="status">
-                  <span class="sr-only visually-hidden">Loading...</span>
+                    <span class="sr-only visually-hidden">Loading...</span>
                 </div>
-              </div>
-              
+            </div>
             Cargando...
         </section>
     </div>
     <h2 class="text-center mb-4">Registro de Productos</h2>
     <form>
         <div class="form-row">
-            <!-- Nombre del Producto -->
+
             <div class="form-group col-md-6 col-12">
                 <label for="productName"><i class="bi bi-box-seam"></i> Nombre del Producto</label>
                 <input type="text" class="form-control" id="productName" placeholder="Ingrese el nombre del producto" required>
             </div>
 
-            <!-- Precio -->
             <div class="form-group col-md-6 col-12">
                 <label for="productPrice"><i class="bi bi-currency-dollar"></i> Precio</label>
                 <input type="number" class="form-control" id="productPrice" placeholder="Ingrese el precio" required>
@@ -44,13 +40,12 @@
         </div>
 
         <div class="form-row">
-            <!-- Stock -->
+
             <div class="form-group col-md-6 col-12">
                 <label for="productStock"><i class="bi bi-boxes"></i> Cantidad en Stock</label>
                 <input type="number" class="form-control" id="productStock" placeholder="Ingrese la cantidad en stock" required>
             </div>
 
-            <!-- Categoría -->
             <div class="form-group col-md-6 col-12">
                 <label for="productCategory"><i class="bi bi-tags-fill"></i> Categoría</label>
                 <select class="form-control" id="productCategory" required>
@@ -64,46 +59,201 @@
         </div>
 
         <div class="form-row">
-            <!-- Descripción -->
             <div class="form-group col-12">
                 <label for="productDescription"><i class="bi bi-card-text"></i> Descripción</label>
                 <textarea class="form-control" id="productDescription" rows="3" placeholder="Descripción del producto"></textarea>
             </div>
         </div>
 
-        <!-- Botón de Enviar -->
         <button type="submit" class="btn btn-primary btn-block mt-3"><i class="bi bi-check-circle"></i> Registrar Producto</button>
     </form>
 
-    <!-- Tabla de Productos -->
     <h3 class="text-center mt-5">Lista de Productos</h3>
-    <table class="table table-bordered mt-3">
+    <table class="table table-bordered mt-3" v-if="products.length">
         <thead class="thead-light">
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Precio</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Categoría</th>
                 <th scope="col">Opciones</th>
             </tr>
         </thead>
         <tbody>
             <!-- Ejemplo de Producto -->
-            <tr>
-                <td>1</td>
-                <td>Producto Ejemplo</td>
-                <td>$100</td>
+            <tr v-for="product in products">
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.stock }}</td>
+                <td>{{ product.category }}</td>
                 <td>
-                    <a href="#" class="text-warning mr-3" title="Editar"><i class="bi bi-pencil-square"></i></a>
-                    <a href="#" class="text-danger" title="Eliminar"><i class="bi bi-trash"></i></a>
-                </td>
+                    <a href="#" class="text-warning mr-3" title="Editar" @click.prevent="openEditModal(product)"><i class="bi bi-pencil-square"></i></a>
+                    <a href="#" class="text-danger" title="Eliminar" @click.prevent="openDeleteModal(product)"><i class="bi bi-trash"></i></a>
             </tr>
-            <!-- Aquí se agregarán más productos dinámicamente -->
+
         </tbody>
     </table>
+    <p v-else class="text-center">No hay productos disponibles.</p>
+
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form @submit.prevent="updateProduct">
+                        <div class="mb-3">
+                            <label for="editProductName" class="form-label">Nombre del Producto</label>
+                            <input type="text" class="form-control" id="editProductName" v-model="editProduct.name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductPrice" class="form-label">Precio</label>
+                            <input type="number" class="form-control" id="editProductPrice" v-model="editProduct.price" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductStock" class="form-label">Cantidad en Stock</label>
+                            <input type="number" class="form-control" id="editProductStock" v-model="editProduct.stock" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductCategory" class="form-label">Categoría</label>
+                            <select class="form-control" id="editProductCategory" v-model="editProduct.category" required>
+                                <option value="">Seleccione una categoría</option>
+                                <option value="electronics">Electrónica</option>
+                                <option value="furniture">Muebles</option>
+                                <option value="clothing">Ropa</option>
+                                <option value="toys">Juguetes</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductDescription" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="editProductDescription" v-model="editProduct.description" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Eliminar Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas eliminar el producto <strong>{{ deleteProduct.name }}</strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" @click="deleteProduct">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
- <script src="./js/controller.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    const app = Vue.createApp({
+    data() {
+        return {
+            products: [],
+            categories: [],
+            newProduct: {
+                name: '',
+                price: 0,
+            },
+            editProduct: { id: null, name: '', price: 0, stock: 0, category: '', description: '' },
+            productToDelete: null,
+            loader: true
+        };
+    }, 
+
+    methods: {
+       sleep(ms){
+        return new Promise(resolve => setTimeout(resolve, ms));
+       },
+       async hideLoader(){
+        await this.sleep(2000);
+        this.loader = false;
+       },
+       async showProducts(){
+        try{
+            const response = await axios.get('api/products');
+            this.products = response.data;
+        } catch (error){
+            console.error('Error al obtener los productos', error);
+        }
+       },
+         async showCategories(){
+          try{
+                const response = await axios.get('api/categories');
+                this.categories = response.data;
+          } catch (error){
+                console.error('Error al obtener las categorías', error);
+          }
+         },
+            async createProduct(){
+            try{
+                    const response = await axios.post('api/products', this.newProduct);
+                    this.products.push(response.data);
+                    this.newProduct = { name: '', price: 0, stock: 0, category: '', description: '' };
+            } catch (error){
+                if (error.response && error.response.data && error.response.data.errors) {
+                    const errorMsg = error.response.data.errors[0].msg;
+                    console.error('Error al crear el producto', errorMsg);
+                } else {
+                    console.error('Error al crear el producto', error);
+                }
+            }
+            },
+            async openEditModal(product){
+            this.editProduct = { ...product };
+            $('#editModal').modal('show');
+            },
+            async updateProduct(){
+            try{
+                const response = await axios.put(`api/products/${this.editProduct.id}`, this.editProduct);
+                const index = this.products.findIndex(product => product.id === this.editProduct.id);
+                this.products[index] = response.data;
+                $('#editModal').modal('hide');
+            } catch (error){
+                if (error.response && error.response.data && error.response.data.errors) {
+                    const errorMsg = error.response.data.errors[0].msg;
+                    console.error('Error al actualizar el producto', errorMsg);
+                } else {
+                    console.error('Error al actualizar el producto', error);
+                }
+            }
+            },
+            async openDeleteModal(product){
+            this.productToDelete = product;
+            $('#deleteModal').modal('show');
+            },
+            async deleteProduct(){
+            try{
+                await axios.delete(`api/products/${this.productToDelete.id}`);
+                this.products = this.products.filter(product => product.id !== this.productToDelete.id);
+                $('#deleteModal').modal('hide');
+            } catch (error){
+                console.error('Error al eliminar el producto', error);
+            }
+            }
+    },
+});
+
+app.mount('#app');
+</script>
 </body>
 </html>
