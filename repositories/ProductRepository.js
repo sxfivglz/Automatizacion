@@ -38,28 +38,27 @@ class ProductRepository {
         }
     }
 
+
     async updateProduct(id, product) {
-      try {
-          const productFound = await Product.findByPk(id);
-          if (!productFound) throw new Error('Producto no encontrado');
+        try {
+            const productFound = await Product.findByPk(id);
+            if (!productFound) throw new Error('Producto no encontrado');
 
-          const updatedProduct = {};
-          for (const key in product) {
-              if (product[key] !== undefined && product[key] !== null && product[key] !== '') {
-                  updatedProduct[key] = product[key];
-              }
-          }
+            const updatedProduct = {};
+            for (const key in product) {
+                if (product[key] !== undefined && product[key] !== null && product[key] !== '') {
+                    updatedProduct[key] = product[key];
+                }
+            }
 
-          if (Object.keys(updatedProduct).length === 0) {
-              throw new Error('No se proporcionaron cambios para actualizar.');
-          }
-  
-          return await productFound.update(updatedProduct);
-      } catch (error) {
-          throw new Error(`Error al actualizar el producto con ID ${id}: ${error.message}`);
-      }
-  }
-  
+            if (Object.keys(updatedProduct).length === 0) {
+                throw new Error('No se proporcionaron cambios para actualizar.');
+            }
+            return await productFound.update(updatedProduct);
+        } catch (error) {
+            throw new Error(`Error al actualizar el producto con ID ${id}: ${error.message}`);
+        }
+    }
 
     async deleteProduct(id) {
         try {

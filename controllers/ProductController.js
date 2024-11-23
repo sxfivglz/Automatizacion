@@ -45,6 +45,7 @@ class ProductController {
     try {
       const { id } = req.params;
       const product = req.body;
+
       const { success, message, data } = await productService.updateProduct(id, product);
       res.status(200).json({ success, message, data });
     } catch (error) {

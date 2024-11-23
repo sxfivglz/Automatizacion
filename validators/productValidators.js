@@ -11,7 +11,6 @@ const validateProduct = [
     }),
     
     check('name', 'El nombre del producto no puede superar los 50 caracteres').isLength({max: 50}),
-    check('description', 'La descripción del producto no puede contener más de 150 caracteres').isLength({max: 150}),
     check('price', 'El precio del producto no puede estar vacío').not().isEmpty(),
     check('price', 'El precio del producto debe ser un número').isNumeric(),
     check('stock', 'El stock del producto no puede estar vacío').not().isEmpty(),
@@ -21,7 +20,6 @@ const validateProduct = [
 
 const validateUpdateProduct = [
     check('name', 'El nombre del producto no puede superar los 50 caracteres').isLength({max: 50}).optional(),
-    check('description', 'La descripción del producto no puede contener más de 150 caracteres').isLength({max: 150}).optional(),
     check('price', 'El precio del producto debe ser un número').isNumeric().optional(),
     check('stock', 'El stock del producto debe ser un número').isNumeric().optional(),
     check('categoryId', 'El producto debe tener una categoría').not().isEmpty().optional(),

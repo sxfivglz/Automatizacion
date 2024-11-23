@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const categoryController = require('../controllers/CategoryController');
-const { validateCategory } = require('../validators/categoryValidators');
+const { validateCategory,validateUpdateCategory } = require('../validators/categoryValidators');
 
 // Ruta para crear categoría con validación
 router.post('/', validateCategory, categoryController.createCategory);
 
 // Ruta para actualizar categoría con validación
-router.put('/:id', validateCategory, categoryController.updateCategory);
+router.put('/:id', validateUpdateCategory, categoryController.updateCategory);
 
 // Resto de rutas para obtener o eliminar categorías
 router.get('/', categoryController.getAllCategories);
