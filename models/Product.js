@@ -17,10 +17,6 @@ Product.init({
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    description: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
     categoryId: {
         type: DataTypes.INTEGER,
         allowNull: false,

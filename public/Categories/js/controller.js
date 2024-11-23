@@ -46,30 +46,39 @@ const app = Vue.createApp({
             try {
                 const response = await axios.put(`/api/categories/${this.editCategory.id}`, this.editCategory);
                 const index = this.categories.findIndex(cat => cat.id === this.editCategory.id);
-                this.categories[index] = response.data;
+                if (index !== -1) {
+                    this.categories[index] = response.data;
+                } else {
+                    console.error('Category not found in local list');
+                }
                 this.editCategory = { id: null, name: '', description: '' };
                 $('#editModal').modal('hide');
             } catch (error) {
-                console.error('Error updating category:', error);
+                console.error('Error updating category:', error.response ? error.response.data : error.message);
             }
         },
+        
         async deleteCategory() {
             try {
+                if (!this.categoryToDelete || !this.categoryToDelete.id) {
+                    console.error('No category selected for deletion');
+                    return;
+                }
                 await axios.delete(`/api/categories/${this.categoryToDelete.id}`);
                 this.categories = this.categories.filter(cat => cat.id !== this.categoryToDelete.id);
                 this.categoryToDelete = null;
                 $('#deleteModal').modal('hide');
             } catch (error) {
-                console.error('Error deleting category:', error);
+                console.error('Error deleting category:', error.response ? error.response.data : error.message);
             }
         },
         openEditModal(category) {
             this.editCategory = { ...category };
-            $('#editModal').modal('show');
+            $('#editModal').modal('show'); 
         },
         openDeleteModal(category) {
-            this.categoryToDelete = category;
-            $('#deleteModal').modal('show');
+            this.categoryToDelete = { ...category };
+            $('#deleteModal').modal('show'); 
         },
       
     },

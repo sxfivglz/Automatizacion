@@ -40,6 +40,7 @@ class ProductService {
     }
   }
 
+
   async deleteProduct(id) {
     try {
       await ProductRepository.deleteProduct(id);
