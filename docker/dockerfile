@@ -1,0 +1,32 @@
+FROM alpine AS linux
+RUN apk update && apk add --no-cache git
+RUN git clone -b main https://github.com/sxfivglz/Automatizacion /app
+
+FROM ubuntu:latest AS base
+RUN apt-get -y update; apt-get -y install curl
+
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash  && \
+ apt-get -qqy install nodejs
+
+WORKDIR /usr/src/app
+COPY --from=linux /app /usr/src/app
+
+RUN ls -la
+RUN npm install
+
+
+# RUN touch .env
+# RUN echo "NODE_ENV=development" >> .env
+# RUN echo "DB_HOST=localhost" >> .env
+# RUN echo "DB_USER=root" >> .env
+# RUN echo "DB_PASSWORD=" >> .env
+# RUN echo "DB_NAME=automatizacion" >> .env
+# RUN echo "DB_PORT=3307" >> .env
+# RUN echo "PORT_APP=3000" >> .env
+
+
+# EXPOSE 3000
+
+# ENV NODE_ENV=development
+
+# CMD [ "npm"," start" ]
