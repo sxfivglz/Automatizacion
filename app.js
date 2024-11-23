@@ -8,8 +8,8 @@ const {
 } = require('./middleware/handler');
 const productRoutes = require('./routes/productRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
-const sequelize = require('./config/database'); // Conexión con Sequelize
-const mysql = require('mysql2'); // Usamos mysql2 para la creación de la base de datos
+const sequelize = require('./config/database'); 
+const mysql = require('mysql2'); 
 
 unhandledRejectionHandler();
 uncaughtExceptionHandler();
@@ -19,17 +19,13 @@ const app = express();
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
-// Rutas de la API
+
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 
-// Manejo de ruta no encontrada
 app.use(notFoundHandler);
-
-// Manejo de errores generales
 app.use(errorHandler);
 
-// Función para verificar y crear la base de datos si no existe
 async function createDatabaseIfNotExists() {
   const connection = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -60,18 +56,14 @@ async function createDatabaseIfNotExists() {
   });
 }
 
-// Conexión a la base de datos y sincronización
 (async () => {
   try {
     await createDatabaseIfNotExists(); 
     await sequelize.authenticate(); 
     console.log('Conexión establecida con la base de datos');
-    
-    // Sincronizamos la base de datos
+
     await sequelize.sync({ alter: true });
 
-    
-    // Iniciamos el servidor solo si la conexión y sincronización fueron exitosas
     app.listen(process.env.PORT_APP, () => {
       console.log(`Servidor ejecutándose en http://localhost:${process.env.PORT_APP}`);
     });

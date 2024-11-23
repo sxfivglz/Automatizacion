@@ -1,0 +1,17 @@
+[
+    {
+      "id": 1,
+      "name": "Electronics",
+      "description": "Devices and gadgets"
+    },
+    {
+      "id": 2,
+      "name": "Books",
+      "description": "Printed and digital books"
+    },
+    {
+      "id": 3,
+      "name": "Clothing",
+      "description": "Clothes and accessories"
+    }
+  ]

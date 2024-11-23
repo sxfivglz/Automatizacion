@@ -38,14 +38,11 @@ class CategoryController {
     }
   }
 
-  // Actualizar categoría
   async updateCategory(req, res) {
-    // Verificar si hay errores en la validación
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
     try {
       const { id } = req.params;
       const category = req.body;
@@ -56,7 +53,6 @@ class CategoryController {
     }
   }
 
-  // Eliminar categoría
   async deleteCategory(req, res) {
     try {
       const { id } = req.params;
