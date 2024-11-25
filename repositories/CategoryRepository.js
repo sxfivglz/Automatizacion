@@ -6,7 +6,11 @@ class CategoryRepository {
   }
 
   async getCategoryById(id) {
-    return await Category.findByPk(id);
+    const category = await Category.findByPk(id);
+    if (!category) {
+      throw new Error('No se encontró la categoría');
+    }
+    return category;
   }
 
   async createCategory(category) {

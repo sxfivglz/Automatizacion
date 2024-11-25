@@ -1,9 +1,6 @@
-const { validationResult } = require('express-validator');
 const categoryService = require('../services/categoryService');
-const { validateCategory } = require('../validators/categoryValidators');
 
 class CategoryController {
-
   async getAllCategories(req, res) {
     try {
       const categories = await categoryService.getAllCategories();
@@ -17,6 +14,9 @@ class CategoryController {
     try {
       const { id } = req.params;
       const category = await categoryService.getCategoryById(id);
+      if (!category) {
+        return res.status(404).json({ message: 'Categoría no encontrada' });
+      }
       res.json(category);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -24,11 +24,6 @@ class CategoryController {
   }
 
   async createCategory(req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     try {
       const category = req.body;
       const newCategory = await categoryService.createCategory(category);
@@ -39,17 +34,17 @@ class CategoryController {
   }
 
   async updateCategory(req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
     try {
       const { id } = req.params;
       const category = req.body;
       const updatedCategory = await categoryService.updateCategory(id, category);
       res.status(200).json(updatedCategory);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      if (error.message === 'No se encontró la categoría') {
+        res.status(404).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: error.message });
+      }
     }
   }
 
@@ -59,7 +54,11 @@ class CategoryController {
       await categoryService.deleteCategory(id);
       res.status(204).end();
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      if (error.message === 'No se encontró la categoría') {
+        res.status(404).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: error.message });
+      }
     }
   }
 }
