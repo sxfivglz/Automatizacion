@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/vue@3.5.11/dist/vue.global.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="container mt-5" id="app">
@@ -25,8 +26,6 @@
     </div>
 
     <h2 class="text-center mb-4">Registro de Productos</h2>
-
-    <!-- Formulario para agregar un producto -->
     <form @submit.prevent="createProduct">
         <div class="form-row">
             <div class="form-group col-md-6 col-12">
@@ -83,9 +82,6 @@
     </table>
     <p v-else class="text-center">No hay productos disponibles.</p>
 
-
-
-<!-- Modal para editar producto -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -147,107 +143,6 @@
     </div>
 </div>
 
-<script>
-const app = Vue.createApp({
-    data() {
-        return {
-            loader: true,
-            products: [],
-            categories: [],
-            category: null,
-            newProduct: { name: '', price: '', stock: '', categoryId: '' },
-            editProduct: { id: null, name: '', price: '', stock: '', category: '' },
-            productToDelete: { id: null, name: '' }
-        };
-    },
-    computed: {
-        filteredCategories() {
-            return this.categories.filter(category => category.id !== this.editProduct.category);
-        }
-    },
-    methods: {
-        async hideLoader() {
-            this.loader = false;
-        },
-        async showProducts() {
-            try {
-                const response = await axios.get('/api/products');
-                this.products = response.data.data;
-                this.products_categories = response.data.categories;
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            }
-        },
-        
-        async createProduct() {
-            try {
-                const response = await axios.post('/api/products', this.newProduct);
-                this.products.push(response.data);
-                this.newProduct = { name: '', price: '', stock: '', categoryId: '' };
-                await this.showProducts();
-
-            } catch (error) {
-                console.error('Error creating product:', error);
-            }
-        },
-        async updateProduct() {
-    try {
-        if (!this.editProduct || !this.editProduct.id || !this.editProduct.category) {
-            throw new Error('editProduct is not properly defined');
-        }
-
-        const updatedProduct = {
-            ...this.editProduct,
-            categoryId: this.editProduct.category
-        };
-
-        const response = await axios.put(`/api/products/${this.editProduct.id}`, updatedProduct);
-
-        // Recarga la lista de productos después de la actualización
-        await this.showProducts(); // Vuelve a cargar los productos
-
-        $('#editModal').modal('hide');
-    } catch (error) {
-        console.error('Error updating product:', error);
-    }
-},
-
-openEditModal(product) {
-    this.editProduct = { ...product };
-    this.editProduct.category = product.Category.id;
-    $('#editModal').modal('show');
-},
-        openDeleteModal(product) {
-            this.productToDelete = { ...product };
-            $('#deleteModal').modal('show');
-        },
-        async deleteProduct() {
-            try {
-                await axios.delete(`/api/products/${this.productToDelete.id}`);
-                this.products = this.products.filter(product => product.id !== this.productToDelete.id);
-                $('#deleteModal').modal('hide');
-            } catch (error) {
-                console.error('Error deleting product:', error);
-            }
-        },
-        async showCategories() {
-            try {
-                const response = await axios.get('/api/categories');
-                this.categories = response.data;
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            }
-        }
-    },
-    mounted() {
-        this.showProducts();
-        this.showCategories();
-        this.hideLoader();
-    }
-});
-
-app.mount('#app');
-
-</script>
+<script src="./js/controller.js"></script>
 </body>
 </html>

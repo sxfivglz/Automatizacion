@@ -1,32 +1,24 @@
-const {check } = require('express-validator');
+const { check } = require('express-validator');
 const Category = require('../models/Category');
-const validateCategory = [
-    check('name', 'El nombre de la categoría ya existe').custom(async (value) => {
-        const category = await Category.findOne({where: {name: value}});
-        if (category) {
-            return Promise.reject();
-        }
-    }),
-    check('name', 'El nombre de la categoría no puede estar vacío').not().isEmpty(),
-    check('name', 'El nombre de la categoría no puede superar los 50 caracteres').isLength({max: 50}),
-    check('description', 'La descripción de la categoría no puede contener más de 150 caracteres').isLength({max: 150}),
-    
 
-    ];
+const nameValidations = [
+  check('name').notEmpty().withMessage('El nombre es obligatorio.'),
+  check('name').isAlpha('es-ES', { ignore: ' ' }).withMessage('El nombre solo puede contener letras.'),
+  check('name').isLength({ max: 50 }).withMessage('El nombre no puede superar los 50 caracteres.'),
+];
 
-    const validateUpdateCategory = [
-        check('name', 'El nombre de la categoría no puede superar los 50 caracteres').isLength({max: 50}).optional(),
-        check('description', 'La descripción de la categoría no puede contener más de 150 caracteres').isLength({max: 150}).optional(),
-        check('name', 'El nombre de la categoría ya existe').custom(async (value, {req}) => {
-            const category = await Category.findOne({where: {name: value}});
-            if (category && category.id !== req.params.id) {
-                return Promise.reject();
-            }
-        }),
+const uniqueNameValidation = check('name').custom(async (value, { req }) => {
+  const category = await Category.findOne({ where: { name: value } });
+  if (category && (!req.params.id || category.id !== parseInt(req.params.id, 10))) {
+    throw new Error('El nombre ya está en uso.');
+  }
+});
 
-        check('name', 'El nombre de la categoría no puede estar vacío').not().isEmpty().optional(),
-    ];
+const descriptionValidation = check('description')
+  .isLength({ max: 150 })
+  .withMessage('La descripción no puede superar los 150 caracteres.');
 
-
+const validateCategory = [...nameValidations, uniqueNameValidation, descriptionValidation];
+const validateUpdateCategory = [...nameValidations.map((rule) => rule.optional()), uniqueNameValidation, descriptionValidation.optional()];
 
 module.exports = { validateCategory, validateUpdateCategory };

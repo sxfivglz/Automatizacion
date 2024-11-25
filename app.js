@@ -19,7 +19,6 @@ const app = express();
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
-
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 
@@ -56,20 +55,5 @@ async function createDatabaseIfNotExists() {
   });
 }
 
-(async () => {
-  try {
-    await createDatabaseIfNotExists(); 
-    await sequelize.authenticate(); 
-    console.log('Conexión establecida con la base de datos');
-
-    await sequelize.sync({ alter: true });
-
-    app.listen(process.env.PORT_APP, () => {
-      console.log(`Servidor ejecutándose en http://localhost:${process.env.PORT_APP}`);
-    });
-  } catch (error) {
-    console.error('No se pudo conectar con la base de datos:', error);
-  }
-})();
-
+// Exporta solo la aplicación sin iniciar el servidor
 module.exports = app;

@@ -1,4 +1,3 @@
-
 const app = Vue.createApp({
     data() {
         return {
@@ -13,19 +12,14 @@ const app = Vue.createApp({
         };
     },
     methods: {
-        sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        },
-        async hideLoader() {
-            await this.sleep(2000);
-            this.loader = false;
-        },
         async showCategories() {
             try {
                 const response = await axios.get('/api/categories');
-                this.categories = response.data;
+                this.categories = response.data; 
             } catch (error) {
                 console.error('Error fetching categories:', error);
+            } finally {
+                this.loader = false;
             }
         },
         async createCategory() {
@@ -57,7 +51,6 @@ const app = Vue.createApp({
                 console.error('Error updating category:', error.response ? error.response.data : error.message);
             }
         },
-        
         async deleteCategory() {
             try {
                 if (!this.categoryToDelete || !this.categoryToDelete.id) {
@@ -80,10 +73,9 @@ const app = Vue.createApp({
             this.categoryToDelete = { ...category };
             $('#deleteModal').modal('show'); 
         },
-      
     },
     mounted() {
-        this.hideLoader();
+     
         this.showCategories();
     }
 });
