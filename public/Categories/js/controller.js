@@ -9,6 +9,8 @@ const app = Vue.createApp({
             editCategory: { id: null, name: '', description: '' },
             categoryToDelete: null,
             loader: true,
+            message: '',
+            messageType: '',
         };
     },
     methods: {
@@ -27,10 +29,16 @@ const app = Vue.createApp({
                 const response = await axios.post('/api/categories', this.newCategory);
                 this.categories.push(response.data);
                 this.newCategory = { name: '', description: '' };
+                this.message = 'Categoría creada';
+                this.messageType = 'success';
+                this.hideMessage();
             } catch (error) {
                 if (error.response && error.response.data && error.response.data.errors) {
                     const errorMsg = error.response.data.errors[0].msg;
                     console.error('Error creating category:', errorMsg);
+                    this.message = 'Error al crear la categoría';
+                    this.messageType = 'error';
+                    this.hideMessage();
                 } else {
                     console.error('Error creating category:', error.message);
                 }
@@ -47,8 +55,15 @@ const app = Vue.createApp({
                 }
                 this.editCategory = { id: null, name: '', description: '' };
                 $('#editModal').modal('hide');
+                await this.showCategories();
+                this.message = 'Categoría actualizada';
+                this.messageType = 'success';
+                this.hideMessage();
             } catch (error) {
-                console.error('Error updating category:', error.response ? error.response.data : error.message);
+                console.error('Error updating category:', error.response ? error.response.data : error.response.data.errors[0].msg);
+                this.message = 'Error al actualizar la categoría';
+                this.messageType = 'error';
+                this.hideMessage();
             }
         },
         async deleteCategory() {
@@ -61,8 +76,14 @@ const app = Vue.createApp({
                 this.categories = this.categories.filter(cat => cat.id !== this.categoryToDelete.id);
                 this.categoryToDelete = null;
                 $('#deleteModal').modal('hide');
+                this.message = 'Categoría eliminada';
+                this.messageType = 'success';
+                this.hideMessage();
             } catch (error) {
                 console.error('Error deleting category:', error.response ? error.response.data : error.message);
+                this.message = 'Error al eliminar la categoría';
+                this.messageType = 'error';
+                this.hideMessage();
             }
         },
         openEditModal(category) {
@@ -73,6 +94,12 @@ const app = Vue.createApp({
             this.categoryToDelete = { ...category };
             $('#deleteModal').modal('show'); 
         },
+        hideMessage() {
+            setTimeout(() => {
+                this.message = '';
+                this.messageType = '';
+            }, 5000);
+        }
     },
     mounted() {
      

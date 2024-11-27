@@ -4,14 +4,18 @@ const Product = require('../models/Product');
 
 const nameValidation = [
   check('name', 'El nombre del producto no puede estar vacío').not().isEmpty(),
-  check('name', 'El producto ya existe').custom(async (value) => {
+  check('name').custom(async (value, { req }) => {
     const product = await Product.findOne({ where: { name: value } });
     if (product) {
-      return Promise.reject();
+      if (!req.params.id) {
+        throw new Error('El nombre ya está en uso.');
+      }
+      if (product.id !== parseInt(req.params.id, 10)) {
+        throw new Error('El nombre ya está en uso.');
+      }
     }
   }),
   check('name', 'El nombre del producto no puede superar los 50 caracteres').isLength({ max: 50 }),
-  check('name', 'El nombre del producto no debe contener caracteres especiales ni números').isAlpha('es-ES', { ignore: ' ' })
 ];
 
 
@@ -25,6 +29,7 @@ const validateProduct = [
   ...nameValidation, 
   check('price', 'El precio del producto no puede estar vacío').not().isEmpty(),
   check('price', 'El precio del producto debe ser un número').isNumeric(),
+  check('price', 'El precio del producto no puede ser menor a 0').isFloat({ min: 0 }),
   ...stockValidation,
   check('categoryId', 'El producto debe tener una categoría').not().isEmpty(),
 ];
@@ -35,6 +40,9 @@ const validateUpdateProduct = [
   check('price', 'El precio del producto debe ser un número').isNumeric().optional(),
   ...stockValidation,
   check('categoryId', 'El producto debe tener una categoría').not().isEmpty().optional(),
+  check('price', 'El precio del producto debe ser mayor a 0').isFloat({ min: 0 }).optional(),
+  check('stock', 'El stock del producto debe ser un número').isNumeric().optional(),
+  check('stock', 'El stock del producto no puede ser menor a 0').isInt({ min: 0 }).optional(),
 ];
 
 module.exports = { validateProduct, validateUpdateProduct };

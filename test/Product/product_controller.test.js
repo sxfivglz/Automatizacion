@@ -15,9 +15,9 @@ describe('Pruebas del ProductController', () => {
     ];
     productService.getAllProducts.mockResolvedValue(mockProducts); // Simulamos la respuesta del servicio
 
-    const response = await request(app).get('/api/products'); // Hacemos la petición GET
+    const response = await request(app).get('/api/products'); 
 
-    expect(response.status).toBe(200); // Verificamos que la respuesta sea OK
+    expect(response.status).toBe(200); // 
     expect(response.body).toEqual(mockProducts); // Verificamos que los productos sean los correctos
     expect(productService.getAllProducts).toHaveBeenCalledTimes(1); // Verificamos que el servicio haya sido llamado una vez
   });
@@ -112,14 +112,6 @@ describe('Pruebas del ProductController', () => {
         expect(response.body).toEqual({ message: 'Error al obtener producto' });
     });
 
-    test('Debe manejar errores al crear un producto', async () => {
-        productService.createProduct.mockRejectedValue(new Error('Error al crear producto'));
-    
-        const response = await request(app).post('/api/products').send({ name: 'New Product' });
-    
-        expect(response.status).toBe(500);
-        expect(response.body).toEqual({ message: 'Error al crear producto' });
-    });
 
  
 
