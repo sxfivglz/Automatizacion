@@ -8,9 +8,15 @@ const nameValidations = [
 ];
 
 const uniqueNameValidation = check('name').custom(async (value, { req }) => {
+
   const category = await Category.findOne({ where: { name: value } });
-  if (category && (!req.params.id || category.id !== parseInt(req.params.id, 10))) {
-    throw new Error('El nombre ya está en uso.');
+  if (category) {
+    if (!req.params.id) {
+      throw new Error('El nombre ya está en uso.');
+    }
+    if (category.id !== parseInt(req.params.id, 10)) {
+      throw new Error('El nombre ya está en uso.');
+    }
   }
 });
 

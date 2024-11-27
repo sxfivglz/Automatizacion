@@ -24,7 +24,12 @@
             Cargando...
         </section>
     </div>
-
+    <div v-if="message" v-bind:class="['alert', 'alert-dismissible', messageType === 'success' ? 'alert-success' : 'alert-danger', 'fade', 'show']" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <h2 class="text-center mb-4">Registro de Productos</h2>
     <form @submit.prevent="createProduct">
         <div class="form-row">
@@ -95,19 +100,19 @@
                 <form @submit.prevent="updateProduct">
                     <div class="mb-3">
                         <label for="editProductName" class="form-label">Nombre del Producto</label>
-                        <input type="text" class="form-control" v-model="editProduct.name" required>
+                        <input type="text" class="form-control" v-model="editProduct.name" id="editProductName" required>
                     </div>
                     <div class="mb-3">
                         <label for="editProductPrice" class="form-label">Precio</label>
-                        <input type="number" class="form-control" v-model="editProduct.price" required>
+                        <input type="number" id="editProductPrice" class="form-control" v-model="editProduct.price" required>
                     </div>
                     <div class="mb-3">
                         <label for="editProductStock" class="form-label">Cantidad en Stock</label>
-                        <input type="number" class="form-control" v-model="editProduct.stock" required>
+                        <input type="number" id="editProductStock" class="form-control" v-model="editProduct.stock" required>
                     </div>
                     <div class="mb-3">
                         <label for="editProductCategory" class="form-label">Categoría</label>
-                        <select class="form-control" v-model="editProduct.category" required>
+                        <select class="form-control" id="editProductCategory" v-model="editProduct.category" required>
                             <!-- Filtramos las categorías para que no se repita la categoría ya seleccionada -->
                             <option v-for="category in categories" :key="category.id" :value="category.id">
                                 {{ category.name }}

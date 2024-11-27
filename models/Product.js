@@ -32,5 +32,5 @@ Product.init({
     });
 
     Product.belongsTo(Category, { foreignKey: 'categoryId' });
-Category.hasMany(Product, { foreignKey: 'categoryId' });
+    Category.hasMany(Product, { foreignKey: 'categoryId' });
 module.exports = Product;

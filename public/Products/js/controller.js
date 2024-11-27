@@ -7,7 +7,9 @@ const app = Vue.createApp({
             category: null,
             newProduct: { name: '', price: '', stock: '', categoryId: '' },
             editProduct: { id: null, name: '', price: '', stock: '', category: '' },
-            productToDelete: { id: null, name: '' }
+            productToDelete: { id: null, name: '' },
+            message: '',
+            messageType: '',
         };
     },
     computed: {
@@ -21,6 +23,12 @@ const app = Vue.createApp({
                 const response = await axios.get('/api/products');
                 this.products = response.data.data;
                 this.products_categories = response.data.categories;
+               
+                this.products.forEach(product => {
+                    if (!product.Category) {
+                        product.Category = { name: 'Sin categoría' };
+                    }
+                });
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -39,8 +47,14 @@ const app = Vue.createApp({
                 this.products.push(response.data);
                 this.newProduct = { name: '', price: '', stock: '', categoryId: '' };
                 await this.showProducts();
+                this.message = 'Producto creado';
+                this.messageType = 'success';
+                this.hideMessage();
             } catch (error) {
                 console.error('Error creating product:', error);
+                this.message = 'Error al crear el producto';
+                this.messageType = 'error';
+                this.hideMessage();
             }
         },
         async updateProduct() {
@@ -58,8 +72,14 @@ const app = Vue.createApp({
 
                 await this.showProducts();
                 $('#editModal').modal('hide');
+                this.message = 'Producto actualizado';
+                this.messageType = 'success';
+                this.hideMessage();
             } catch (error) {
                 console.error('Error updating product:', error);
+                this.message = 'Error al actualizar el producto';
+                this.messageType = 'error';
+                this.hideMessage();
             }
         },
         openEditModal(product) {
@@ -76,9 +96,21 @@ const app = Vue.createApp({
                 await axios.delete(`/api/products/${this.productToDelete.id}`);
                 this.products = this.products.filter(product => product.id !== this.productToDelete.id);
                 $('#deleteModal').modal('hide');
+                this.message = 'Producto eliminado';
+                this.messageType = 'success';
+                this.hideMessage();
             } catch (error) {
                 console.error('Error deleting product:', error);
+                this.message = 'Error al eliminar el producto';
+                this.messageType = 'error';
+                this.hideMessage();
             }
+        },
+        hideMessage() {
+            setTimeout(() => {
+                this.message = '';
+                this.messageType = '';
+            }, 5000);
         }
     },
     async mounted() {
