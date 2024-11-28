@@ -77,6 +77,7 @@ const app = Vue.createApp({
                 this.hideMessage();
             } catch (error) {
                 console.error('Error updating product:', error);
+                $('#editModal').modal('hide');
                 this.message = 'Error al actualizar el producto';
                 this.messageType = 'error';
                 this.hideMessage();
@@ -110,7 +111,7 @@ const app = Vue.createApp({
             setTimeout(() => {
                 this.message = '';
                 this.messageType = '';
-            }, 5000);
+            }, 3000);
         }
     },
     async mounted() {

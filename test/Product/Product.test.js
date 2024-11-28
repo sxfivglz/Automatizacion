@@ -57,7 +57,6 @@ describe('Pruebas con mocking en el modelo Product', () => {
        
         const product = await Product.findOne({ where: { id: 1 } });
 
-        // Verificaciones
         expect(Product.findOne).toHaveBeenCalledTimes(1);
         expect(Product.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
         expect(product).toEqual(mockResponse);

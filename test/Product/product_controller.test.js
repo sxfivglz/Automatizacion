@@ -1,11 +1,11 @@
-jest.mock('../../services/ProductService'); // Mockeamos el servicio ProductService
+jest.mock('../../services/ProductService'); 
 const request = require('supertest');
-const app = require('../../app'); // Asegúrate de que este sea el archivo que contiene tu app Express
+const app = require('../../app'); 
 const productService = require('../../services/ProductService');
 
 describe('Pruebas del ProductController', () => {
   afterEach(() => {
-    jest.clearAllMocks(); // Limpiamos los mocks después de cada prueba
+    jest.clearAllMocks();
   });
 
   test('Debe obtener todos los productos', async () => {
@@ -13,13 +13,13 @@ describe('Pruebas del ProductController', () => {
       { id: 1, name: 'Product 1', price: 100, stock: 50, categoryId: 1 },
       { id: 2, name: 'Product 2', price: 200, stock: 30, categoryId: 2 },
     ];
-    productService.getAllProducts.mockResolvedValue(mockProducts); // Simulamos la respuesta del servicio
+    productService.getAllProducts.mockResolvedValue(mockProducts); 
 
     const response = await request(app).get('/api/products'); 
 
-    expect(response.status).toBe(200); // 
-    expect(response.body).toEqual(mockProducts); // Verificamos que los productos sean los correctos
-    expect(productService.getAllProducts).toHaveBeenCalledTimes(1); // Verificamos que el servicio haya sido llamado una vez
+    expect(response.status).toBe(200); 
+    expect(response.body).toEqual(mockProducts);
+    expect(productService.getAllProducts).toHaveBeenCalledTimes(1); 
   });
 
   test('Debe obtener un producto por ID', async () => {
@@ -34,9 +34,9 @@ describe('Pruebas del ProductController', () => {
   });
 
   test('Debe retornar 404 si no se encuentra el producto por ID', async () => {
-    productService.getProductById.mockResolvedValue(null); // Simulamos que no se encontró el producto
+    productService.getProductById.mockResolvedValue(null); 
 
-    const response = await request(app).get('/api/products/999'); // ID no válido
+    const response = await request(app).get('/api/products/999');
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({ message: 'Producto no encontrado' });
@@ -81,7 +81,7 @@ describe('Pruebas del ProductController', () => {
 
     const response = await request(app).delete('/api/products/1');
 
-    expect(response.status).toBe(204); // No content
+    expect(response.status).toBe(204); 
     expect(productService.deleteProduct).toHaveBeenCalledWith('1');
   });
 

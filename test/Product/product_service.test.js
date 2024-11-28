@@ -1,10 +1,10 @@
-jest.mock('../../repositories/ProductRepository'); // Mockea ProductRepository
+jest.mock('../../repositories/ProductRepository');
 const ProductRepository = require('../../repositories/ProductRepository');
 const ProductService = require('../../services/ProductService');
 
 describe('Pruebas de ProductService', () => {
   afterEach(() => {
-    jest.clearAllMocks(); // Limpia los mocks después de cada prueba
+    jest.clearAllMocks();
   });
 
   test('Debe obtener todos los productos', async () => {
