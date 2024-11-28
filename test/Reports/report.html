@@ -1,0 +1,324 @@
+<html><head><meta charset="utf-8"/><title>Reporte de Pruebas</title><style type="text/css">html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+body {
+  padding: 2rem 1rem;
+  font-size: 0.85rem;
+}
+.jesthtml-content {
+  margin: 0 auto;
+  max-width: 70rem;
+}
+header {
+  display: flex;
+  align-items: center;
+}
+#title {
+  margin: 0;
+  flex-grow: 1;
+}
+#logo {
+  height: 4rem;
+}
+#timestamp {
+  color: #777;
+  margin-top: 0.5rem;
+}
+
+/** SUMMARY */
+#summary {
+  color: #333;
+  margin: 2rem 0;
+  display: flex;
+  font-family: monospace;
+  font-size: 1rem;
+}
+#summary > div {
+  margin-right: 2rem;
+  background: #eee;
+  padding: 1rem;
+  min-width: 15rem;
+}
+#summary > div:last-child {
+  margin-right: 0;
+}
+@media only screen and (max-width: 720px) {
+  #summary {
+    flex-direction: column;
+  }
+  #summary > div {
+    margin-right: 0;
+    margin-top: 2rem;
+  }
+  #summary > div:first-child {
+    margin-top: 0;
+  }
+}
+
+.summary-total {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.summary-passed {
+  color: #4f8a10;
+  border-left: 0.4rem solid #4f8a10;
+  padding-left: 0.5rem;
+}
+.summary-failed,
+.summary-obsolete-snapshots {
+  color: #d8000c;
+  border-left: 0.4rem solid #d8000c;
+  padding-left: 0.5rem;
+}
+.summary-pending {
+  color: #9f6000;
+  border-left: 0.4rem solid #9f6000;
+  padding-left: 0.5rem;
+}
+.summary-empty {
+  color: #999;
+  border-left: 0.4rem solid #999;
+}
+
+.test-result {
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+}
+.test-result:last-child {
+  border: 0;
+}
+.test-result.passed {
+  background-color: #dff2bf;
+  color: #4f8a10;
+}
+.test-result.failed {
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+.test-result.pending {
+  background-color: #ffdf61;
+  color: #9f6000;
+}
+
+.test-info {
+  display: flex;
+  justify-content: space-between;
+}
+.test-suitename {
+  width: 20%;
+  text-align: left;
+  font-weight: bold;
+  word-break: break-word;
+}
+.test-title {
+  width: 40%;
+  text-align: left;
+  font-style: italic;
+}
+.test-status {
+  width: 20%;
+  text-align: right;
+}
+.test-duration {
+  width: 10%;
+  text-align: right;
+  font-size: 0.75rem;
+}
+
+.failureMessages {
+  padding: 0 1rem;
+  margin-top: 1rem;
+  border-top: 1px dashed #d8000c;
+}
+.failureMessages.suiteFailure {
+  border-top: none;
+}
+.failureMsg {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.suite-container {
+  margin-bottom: 2rem;
+}
+.suite-container > input[type="checkbox"] {
+  position: absolute;
+  left: -100vw;
+}
+.suite-container label {
+  display: block;
+}
+.suite-container .suite-tests {
+  overflow-y: hidden;
+  height: 0;
+}
+.suite-container > input[type="checkbox"]:checked ~ .suite-tests {
+  height: auto;
+  overflow: visible;
+}
+.suite-info {
+  padding: 1rem;
+  background-color: #eee;
+  color: #777;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.suite-info:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+.suite-info .suite-path {
+  word-break: break-all;
+  flex-grow: 1;
+  font-family: monospace;
+  font-size: 1rem;
+}
+.suite-info .suite-time {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.75rem;
+}
+.suite-info .suite-time.warn {
+  background-color: #d8000c;
+  color: #fff;
+}
+.suite-info:before {
+  content: "\2303";
+  display: inline-block;
+  margin-right: 0.5rem;
+  transform: rotate(0deg);
+}
+.suite-container > input[type="checkbox"]:checked ~ label .suite-info:before {
+  transform: rotate(180deg);
+}
+
+/* CONSOLE LOGS */
+.suite-consolelog {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: #efefef;
+}
+.suite-consolelog-header {
+  font-weight: bold;
+}
+.suite-consolelog-item {
+  padding: 0.5rem;
+}
+.suite-consolelog-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-consolelog-item-origin {
+  color: #777;
+  font-weight: bold;
+}
+.suite-consolelog-item-message {
+  color: #000;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+
+/* OBSOLETE SNAPSHOTS */
+.suite-obsolete-snapshots {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+.suite-obsolete-snapshots-header {
+  font-weight: bold;
+}
+.suite-obsolete-snapshots-item {
+  padding: 0.5rem;
+}
+.suite-obsolete-snapshots-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-obsolete-snapshots-item-message {
+  color: #000;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+</style></head><body><div class="jesthtml-content"><header><h1 id="title">Reporte de Pruebas</h1></header><div id="metadata-container"><div id="timestamp">Started: 2024-11-28 03:11:17</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (10)</div><div class="summary-passed ">10 passed</div><div class="summary-failed  summary-empty">0 failed</div><div class="summary-pending  summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (87)</div><div class="summary-passed ">87 passed</div><div class="summary-failed  summary-empty">0 failed</div><div class="summary-pending  summary-empty">0 pending</div></div></div></div><div id="suite-1" class="suite-container"><input id="collapsible-0" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-0"><div class="suite-info"><div class="suite-path">O:\UTT\Automatizacion\test\Product\product_service.test.js</div><div class="suite-time">1.604s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de ProductService</div><div class="test-title">Debe obtener todos los productos</div><div class="test-status">passed</div><div class="test-duration">0.011s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de ProductService</div><div class="test-title">Debe manejar error al obtener todos los productos</div><div class="test-status">passed</div><div class="test-duration">0.014s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de ProductService</div><div class="test-title">Debe obtener un producto por ID</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de ProductService</div><div class="test-title">Debe manejar error al obtener un producto inexistente por ID</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de ProductService</div><div class="test-title">Debe manejar error al obtener un producto por ID (fallo del repositorio)</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de ProductService</div><div class="test-title">Debe crear un producto correctamente</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de ProductService</div><div class="test-title">Debe manejar error al crear un producto</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de ProductService</div><div class="test-title">Debe actualizar un producto correctamente</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de ProductService</div><div class="test-title">Debe manejar error al actualizar un producto</div><div class="test-status">passed</div><div class="test-duration">0.013s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de ProductService</div><div class="test-title">Debe eliminar un producto correctamente</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de ProductService</div><div class="test-title">Debe manejar error al eliminar un producto</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div></div></div><div id="suite-2" class="suite-container"><input id="collapsible-1" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-1"><div class="suite-info"><div class="suite-path">O:\UTT\Automatizacion\test\Category\category_service.test.js</div><div class="suite-time">1.665s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de CategoryService</div><div class="test-title">Debe obtener todas las categorías</div><div class="test-status">passed</div><div class="test-duration">0.012s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de CategoryService</div><div class="test-title">Debe obtener una categoría por ID</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de CategoryService</div><div class="test-title">Debe manejar error al obtener una categoría inexistente por ID</div><div class="test-status">passed</div><div class="test-duration">0.079s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de CategoryService</div><div class="test-title">Debe crear una categoría correctamente</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de CategoryService</div><div class="test-title">Debe manejar error al crear una categoría</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de CategoryService</div><div class="test-title">Debe actualizar una categoría correctamente</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de CategoryService</div><div class="test-title">Debe manejar error al actualizar una categoría inexistente</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de CategoryService</div><div class="test-title">Debe eliminar una categoría correctamente</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de CategoryService</div><div class="test-title">Debe manejar error al eliminar una categoría inexistente</div><div class="test-status">passed</div><div class="test-duration">0.007s</div></div></div></div></div><div id="suite-3" class="suite-container"><input id="collapsible-2" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-2"><div class="suite-info"><div class="suite-path">O:\UTT\Automatizacion\test\Product\product.test.js</div><div class="suite-time">2.185s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Product</div><div class="test-title">Debe llamar a Product.create con los datos correctos</div><div class="test-status">passed</div><div class="test-duration">0.026s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Product</div><div class="test-title">Debe manejar errores al crear un producto con precio negativo</div><div class="test-status">passed</div><div class="test-duration">0.028s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Product</div><div class="test-title">Debe recuperar un producto por ID con Product.findOne</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Product</div><div class="test-title">Debe manejar error al intentar recuperar un producto inexistente</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Product</div><div class="test-title">Debe eliminar un producto con Product.destroy</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Product</div><div class="test-title">Debe manejar error al intentar eliminar un producto inexistente</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Product</div><div class="test-title">Debe manejar error al intentar crear un producto con stock negativo</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div></div></div><div id="suite-4" class="suite-container"><input id="collapsible-3" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-3"><div class="suite-info"><div class="suite-path">O:\UTT\Automatizacion\test\Product\product_repository.test.js</div><div class="suite-time">0.498s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con ProductRepository</div><div class="test-title">Debe obtener todos los productos</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con ProductRepository</div><div class="test-title">Debe obtener un producto por ID</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con ProductRepository</div><div class="test-title">Debe manejar error al obtener producto por ID inexistente</div><div class="test-status">passed</div><div class="test-duration">0s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con ProductRepository</div><div class="test-title">Debe crear un producto correctamente</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con ProductRepository</div><div class="test-title">Debe manejar error al crear un producto</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con ProductRepository</div><div class="test-title">Debe actualizar un producto correctamente</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con ProductRepository</div><div class="test-title">Debe manejar error al actualizar un producto no encontrado</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con ProductRepository</div><div class="test-title">Debe eliminar un producto correctamente</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con ProductRepository</div><div class="test-title">Debe manejar error al eliminar un producto no encontrado</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div></div></div><div id="suite-5" class="suite-container"><input id="collapsible-4" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-4"><div class="suite-info"><div class="suite-path">O:\UTT\Automatizacion\test\Category\category_repository.test.js</div><div class="suite-time">0.595s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con CategoryRepository</div><div class="test-title">Debe obtener todas las categorías</div><div class="test-status">passed</div><div class="test-duration">0.04s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con CategoryRepository</div><div class="test-title">Debe obtener una categoría por ID</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con CategoryRepository</div><div class="test-title">Debe manejar error al obtener categoría por ID inexistente</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con CategoryRepository</div><div class="test-title">Debe crear una categoría correctamente</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con CategoryRepository</div><div class="test-title">Debe manejar error al crear una categoría</div><div class="test-status">passed</div><div class="test-duration">0.007s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con CategoryRepository</div><div class="test-title">Debe actualizar una categoría correctamente</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con CategoryRepository</div><div class="test-title">Debe manejar error al actualizar una categoría no encontrada</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con CategoryRepository</div><div class="test-title">Debe eliminar una categoría correctamente</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con CategoryRepository</div><div class="test-title">Debe manejar error al eliminar una categoría no encontrada</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div></div></div><div id="suite-6" class="suite-container"><input id="collapsible-5" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-5"><div class="suite-info"><div class="suite-path">O:\UTT\Automatizacion\test\Category\category.test.js</div><div class="suite-time">0.964s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Category</div><div class="test-title">Debe llamar a Category.create con los datos correctos</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Category</div><div class="test-title">Debe manejar errores al crear una categoría</div><div class="test-status">passed</div><div class="test-duration">0.02s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Category</div><div class="test-title">Debe crear una categoría válida con datos mínimos</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Category</div><div class="test-title">Debe manejar error al intentar crear una categoría duplicada</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas con mocking en el modelo Category</div><div class="test-title">Debe ignorar datos adicionales no definidos en el modelo</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div></div></div><div id="suite-7" class="suite-container"><input id="collapsible-6" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-6"><div class="suite-info"><div class="suite-path">O:\UTT\Automatizacion\test\Product\product_controller.test.js</div><div class="suite-time">3.726s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del ProductController</div><div class="test-title">Debe obtener todos los productos</div><div class="test-status">passed</div><div class="test-duration">0.117s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del ProductController</div><div class="test-title">Debe obtener un producto por ID</div><div class="test-status">passed</div><div class="test-duration">0.018s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del ProductController</div><div class="test-title">Debe retornar 404 si no se encuentra el producto por ID</div><div class="test-status">passed</div><div class="test-duration">0.011s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del ProductController</div><div class="test-title">Debe crear un nuevo producto</div><div class="test-status">passed</div><div class="test-duration">0.264s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del ProductController</div><div class="test-title">Debe actualizar un producto</div><div class="test-status">passed</div><div class="test-duration">0.015s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del ProductController</div><div class="test-title">Debe retornar 404 si no se encuentra el producto al intentar actualizar</div><div class="test-status">passed</div><div class="test-duration">0.115s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del ProductController</div><div class="test-title">Debe eliminar un producto</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del ProductController</div><div class="test-title">Debe retornar 404 si no se encuentra el producto al intentar eliminar</div><div class="test-status">passed</div><div class="test-duration">0.01s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del ProductController</div><div class="test-title">Debe manejar errores al obtener todos los productos</div><div class="test-status">passed</div><div class="test-duration">0.009s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del ProductController</div><div class="test-title">Debe manejar errores al obtener un producto por ID</div><div class="test-status">passed</div><div class="test-duration">0.015s</div></div></div></div></div><div id="suite-8" class="suite-container"><input id="collapsible-7" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-7"><div class="suite-info"><div class="suite-path">O:\UTT\Automatizacion\test\Category\category_controller.test.js</div><div class="suite-time">3.822s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe obtener todas las categorías</div><div class="test-status">passed</div><div class="test-duration">0.129s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe manejar error al obtener todas las categorías</div><div class="test-status">passed</div><div class="test-duration">0.012s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe obtener una categoría por ID</div><div class="test-status">passed</div><div class="test-duration">0.013s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe manejar error al obtener categoría por ID no existente</div><div class="test-status">passed</div><div class="test-duration">0.06s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe manejar error al obtener una categoría por ID</div><div class="test-status">passed</div><div class="test-duration">0.053s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe crear una categoría correctamente</div><div class="test-status">passed</div><div class="test-duration">0.18s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe manejar error al crear una categoría</div><div class="test-status">passed</div><div class="test-duration">0.153s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe actualizar una categoría correctamente</div><div class="test-status">passed</div><div class="test-duration">0.013s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe manejar error al actualizar una categoría no existente</div><div class="test-status">passed</div><div class="test-duration">0.014s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe manejar error al actualizar una categoría</div><div class="test-status">passed</div><div class="test-duration">0.014s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe eliminar una categoría correctamente</div><div class="test-status">passed</div><div class="test-duration">0.009s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe manejar error al eliminar una categoría no existente</div><div class="test-status">passed</div><div class="test-duration">0.007s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas del CategoryController</div><div class="test-title">Debe manejar error al eliminar una categoría</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div></div></div><div id="suite-9" class="suite-container"><input id="collapsible-8" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-8"><div class="suite-info"><div class="suite-path">O:\UTT\Automatizacion\test\Category\category_ui.test.js</div><div class="suite-time warn">8.722s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI para Categorías</div><div class="test-title">Debería crear una nueva categoría</div><div class="test-status">passed</div><div class="test-duration">0.661s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI para Categorías</div><div class="test-title">Debería mostrar un error si el nombre de la categoría ya existe</div><div class="test-status">passed</div><div class="test-duration">0.32s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI para Categorías</div><div class="test-title">Debería actualizar una categoría existente</div><div class="test-status">passed</div><div class="test-duration">0.749s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI para Categorías</div><div class="test-title">Debería eliminar una categoría</div><div class="test-status">passed</div><div class="test-duration">1.745s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI para Categorías</div><div class="test-title">Debería mostrar un error si el nombre supera los 50 caracteres</div><div class="test-status">passed</div><div class="test-duration">0.391s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI para Categorías</div><div class="test-title">Debería mostrar un error si la descripción supera los 255 caracteres</div><div class="test-status">passed</div><div class="test-duration">0.596s</div></div></div></div><div class="suite-consolelog"><div class="suite-consolelog-header">Console Log</div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at error (O:\UTT\Automatizacion\test\Category\category_ui.test.js:40:17)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at Object.&lt;anonymous&gt; (O:\UTT\Automatizacion\test\Category\category_ui.test.js:99:13)</pre><pre class="suite-consolelog-item-message">No se encontró el mensaje de alerta: NoSuchElementError: no such element: Unable to locate element: {"method":"css selector","selector":".alert"}
+  (Session info: chrome=131.0.6778.86)
+    at Object.throwDecodedError (O:\UTT\Automatizacion\node_modules\selenium-webdriver\lib\error.js:521:15)
+    at parseHttpResponse (O:\UTT\Automatizacion\node_modules\selenium-webdriver\lib\http.js:514:13)
+    at Executor.execute (O:\UTT\Automatizacion\node_modules\selenium-webdriver\lib\http.js:446:28)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at Driver.execute (O:\UTT\Automatizacion\node_modules\selenium-webdriver\lib\webdriver.js:744:17)
+    at toWireValue (O:\UTT\Automatizacion\node_modules\selenium-webdriver\lib\webdriver.js:148:15)
+    at O:\UTT\Automatizacion\node_modules\selenium-webdriver\lib\webdriver.js:194:16
+    at forEachKey (O:\UTT\Automatizacion\node_modules\selenium-webdriver\lib\webdriver.js:188:9)
+    at convertKeys (O:\UTT\Automatizacion\node_modules\selenium-webdriver\lib\webdriver.js:193:3)
+    at Driver.execute (O:\UTT\Automatizacion\node_modules\selenium-webdriver\lib\webdriver.js:742:22) {
+  remoteStacktrace: '\tGetHandleVerifier [0x00007FF660226CB5+28821]\n' +
+    '\t(No symbol) [0x00007FF660193840]\n' +
+    '\t(No symbol) [0x00007FF66003578A]\n' +
+    '\t(No symbol) [0x00007FF6600891BE]\n' +
+    '\t(No symbol) [0x00007FF6600894AC]\n' +
+    '\t(No symbol) [0x00007FF6600D2647]\n' +
+    '\t(No symbol) [0x00007FF6600AF33F]\n' +
+    '\t(No symbol) [0x00007FF6600CF412]\n' +
+    '\t(No symbol) [0x00007FF6600AF0A3]\n' +
+    '\t(No symbol) [0x00007FF66007A778]\n' +
+    '\t(No symbol) [0x00007FF66007B8E1]\n' +
+    '\tGetHandleVerifier [0x00007FF66055FCAD+3408013]\n' +
+    '\tGetHandleVerifier [0x00007FF66057741F+3504127]\n' +
+    '\tGetHandleVerifier [0x00007FF66056B5FD+3455453]\n' +
+    '\tGetHandleVerifier [0x00007FF6602EBDBB+835995]\n' +
+    '\t(No symbol) [0x00007FF66019EB5F]\n' +
+    '\t(No symbol) [0x00007FF66019A814]\n' +
+    '\t(No symbol) [0x00007FF66019A9AD]\n' +
+    '\t(No symbol) [0x00007FF66018A199]\n' +
+    '\tBaseThreadInitThunk [0x00007FF96B27DBE7+23]\n' +
+    '\tRtlUserThreadStart [0x00007FF96C57FBEC+44]\n'
+}</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Category\category_ui.test.js:102:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje recibido: Categoría creada
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Category\category_ui.test.js:121:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje de error recibido: Error al crear la categoría
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Category\category_ui.test.js:146:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje recibido: Categoría actualizada
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Category\category_ui.test.js:164:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Modal de eliminación visible</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Category\category_ui.test.js:171:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje recibido: Categoría eliminada
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Category\category_ui.test.js:190:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje de error recibido: Error al crear la categoría
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Category\category_ui.test.js:211:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje de error recibido: Error al crear la categoría
+×</pre></div></div></div><div id="suite-10" class="suite-container"><input id="collapsible-9" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-9"><div class="suite-info"><div class="suite-path">O:\UTT\Automatizacion\test\Product\product_ui.test.js</div><div class="suite-time warn">38.184s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI de Productos</div><div class="test-title">Debería poder crear un producto</div><div class="test-status">passed</div><div class="test-duration">4.023s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI de Productos</div><div class="test-title">Debería mostrar un error si el nombre del producto ya existe</div><div class="test-status">passed</div><div class="test-duration">3.602s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI de Productos</div><div class="test-title">Debería mostrar un error si se intenta actualizar un producto con valores negativos en el stock</div><div class="test-status">passed</div><div class="test-duration">4.66s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI de Productos</div><div class="test-title">Debería mostrar un error si se intenta actualizar un producto con valores negativos en el price</div><div class="test-status">passed</div><div class="test-duration">4.575s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI de Productos</div><div class="test-title">Debería mostrar un error si se intenta actualizar un producto con valores muy altos en stock</div><div class="test-status">passed</div><div class="test-duration">5.555s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI de Productos</div><div class="test-title">Debería mostrar un error si se intenta actualizar un producto con nombre de más de 50 caracteres</div><div class="test-status">passed</div><div class="test-duration">4.874s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI de Productos</div><div class="test-title">Debería actualizar un producto existente</div><div class="test-status">passed</div><div class="test-duration">1.878s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Pruebas de UI de Productos</div><div class="test-title">Debería eliminar un producto</div><div class="test-status">passed</div><div class="test-duration">4.579s</div></div></div></div><div class="suite-consolelog"><div class="suite-consolelog-header">Console Log</div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Product\product_ui.test.js:131:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje de alerta: Producto creado
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Product\product_ui.test.js:154:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje de error recibido: Error al crear el producto
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Product\product_ui.test.js:186:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje de error recibido: Error al actualizar el producto
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Product\product_ui.test.js:217:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje de error recibido: Error al actualizar el producto
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Product\product_ui.test.js:249:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje de error recibido: Error al actualizar el producto
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Product\product_ui.test.js:280:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje de error recibido: Error al actualizar el producto
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Product\product_ui.test.js:330:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje recibido: Producto actualizado
+×</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (O:\UTT\Automatizacion\test\Product\product_ui.test.js:356:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre><pre class="suite-consolelog-item-message">Mensaje recibido: Producto eliminado
+×</pre></div></div></div></div></body></html>

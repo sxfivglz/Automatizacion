@@ -1,12 +1,12 @@
-jest.mock('../../services/categoryService'); // Mockeamos el servicio CategoryService
+jest.mock('../../services/categoryService');
 const request = require('supertest');
-const app = require('../../app'); // Suponiendo que tu aplicación Express está exportada desde app.js
+const app = require('../../app'); 
 const categoryService = require('../../services/categoryService');
 
 describe('Pruebas del CategoryController', () => {
 
   afterEach(() => {
-    jest.clearAllMocks(); // Limpiamos los mocks después de cada prueba
+    jest.clearAllMocks();
   });
 
   test('Debe obtener todas las categorías', async () => {

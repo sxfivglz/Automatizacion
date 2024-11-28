@@ -1,4 +1,4 @@
-jest.mock('../../repositories/CategoryRepository'); // Mockea CategoryRepository
+jest.mock('../../repositories/CategoryRepository');
 const CategoryRepository = require('../../repositories/CategoryRepository');
 const CategoryService = require('../../services/categoryService');
 

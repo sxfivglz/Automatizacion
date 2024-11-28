@@ -22,7 +22,8 @@ const nameValidation = [
 const stockValidation = [
   check('stock', 'El stock del producto debe ser un número').isNumeric().optional(),
   check('stock', 'El stock del producto no puede estar vacío').not().isEmpty().optional(),
-  check('stock', 'El stock del producto no puede ser menor a 0').isInt({ min: 0 }).optional()
+  check('stock', 'El stock del producto no puede ser menor a 0').isInt({ min: 0 }).optional(),
+  check('stock', 'El stock del producto no puede ser mayor a 1,000,000').isInt({ max: 1000000 }).optional() 
 ];
 
 const validateProduct = [

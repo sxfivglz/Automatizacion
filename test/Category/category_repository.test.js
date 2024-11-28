@@ -1,7 +1,7 @@
 jest.mock('../../models/Category', () => require('../Mocks/product-category').CategoryMock);
 
 const CategoryRepository = require('../../repositories/CategoryRepository');
-const Category = require('../../models/Category'); // Asegúrate de que se importa el modelo mockeado
+const Category = require('../../models/Category');
 
 describe('Pruebas con CategoryRepository', () => {
   afterEach(() => {
