@@ -78,6 +78,7 @@ async function createDriver() {
     try {
         const service = new chrome.ServiceBuilder(chromedriver.path);
         const options = new chrome.Options();
+        options.addArguments('--headless');
         driver = await new Builder()
             .forBrowser(Browser.CHROME)
             .setChromeService(service)

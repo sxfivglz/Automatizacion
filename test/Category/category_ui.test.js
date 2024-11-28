@@ -203,7 +203,7 @@ describe('Pruebas de UI para Categorías', () => {
             await name.clear();
             await description.clear();    
             await name.sendKeys(newCategory.name);
-            const longDescription = 'Descripción con más de doscientos cincuenta y cinco caracteres en su descripción'.substring(0, 256);
+            const longDescription = 'Descripción con más de doscientos cincuenta y cinco caracteres en su descripción'.repeat(5).substring(0, 256);
             await description.sendKeys(longDescription);
             await driver.findElement(By.css(SELECTORS.submitButton)).click();    
             const alertElement = await driver.findElement(By.css(SELECTORS.alertMessage));
