@@ -44,6 +44,7 @@ RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/11
 COPY wait-for-it.sh /usr/src/app/wait-for-it.sh
 RUN chmod +x /usr/src/app/wait-for-it.sh
 
+
 # Exponer el puerto de la aplicación
 EXPOSE 3000
 
