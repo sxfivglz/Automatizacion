@@ -160,14 +160,18 @@ describe('Pruebas de UI para Categorías', () => {
             expect(categoryName).toBe(newCategory.name);
 
             await categoryRow.findElement(By.css(SELECTORS.editButton)).click();
-            const modal = await driver.wait(until.elementIsVisible(driver.findElement(By.css(SELECTORS.editModal))), 10000); 
+            const modal = await driver.wait(
+                until.elementIsVisible(driver.findElement(By.css(SELECTORS.editModal))),
+                10000
+            );
             await sleep(1000);          
             await driver.findElement(By.css(SELECTORS.editCategoryName)).clear();
             await driver.findElement(By.css(SELECTORS.editCategoryName)).sendKeys('Categoría editada');
             await driver.findElement(By.css(SELECTORS.editCategoryDescription)).clear();
             await driver.findElement(By.css(SELECTORS.editCategoryDescription)).sendKeys('Descripción editada');
             await driver.findElement(By.css(`${SELECTORS.editModal} button[type="submit"]`)).click();
-            const alertElement = await waitForAlert(driver); 
+            await waitForAlert(driver);
+            const alertElement = await driver.findElement(By.css(SELECTORS.alertMessage));
             const message = await alertElement.getText();
             console.log('Mensaje recibido:', message);
             expect(message).toContain('Categoría actualizada');
