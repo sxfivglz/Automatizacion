@@ -36,13 +36,36 @@ async function sleep(time) {
 async function waitForAlert(driver) {
     try {
         const alertElement = await driver.wait(
-            until.elementIsVisible(driver.findElement(By.css(SELECTORS.alertMessage))),
-            5000
+            until.elementLocated(By.css(SELECTORS.alertMessage)),
+            8000
         );
+        await driver.wait(until.elementIsVisible(alertElement), 5000);
         return alertElement;
     } catch (error) {
         console.error('No se encontró el mensaje de alerta:', error);
         return null;
+    }
+}
+
+async function waitForAlertToDisappear(driver) {
+    try {
+        await driver.wait(
+            until.stalenessOf(driver.findElement(By.css(SELECTORS.alertMessage))),
+            8000
+        );
+    } catch (error) {
+        console.error('El mensaje de alerta no desapareció:', error);
+    }
+}
+async function waitForLoader(driver) {
+    let visibleLoader = true;
+    while (visibleLoader) {
+        try {
+            await driver.findElement(By.css(SELECTORS.loader));
+            await sleep(1000);
+        } catch (error) {
+            visibleLoader = false;
+        }
     }
 }
 
@@ -67,17 +90,7 @@ async function createDriver() {
     }
 }
 
-async function waitForLoader(driver) {
-    let visibleLoader = true;
-    while (visibleLoader) {
-        try {
-            await driver.findElement(By.css(SELECTORS.loader));
-            await sleep(1000);
-        } catch (error) {
-            visibleLoader = false;
-        }
-    }
-}
+
 
 describe('Pruebas de UI para Categorías', () => {
     let driver;
@@ -100,11 +113,11 @@ describe('Pruebas de UI para Categorías', () => {
             await name.sendKeys(newCategory.name);
             await description.sendKeys(newCategory.description);
             await driver.findElement(By.css(SELECTORS.submitButton)).click();
-            await waitForAlert(driver);
-            const alertElement = await driver.findElement(By.css(SELECTORS.alertMessage));
+            const alertElement = await waitForAlert(driver);
             const message = await alertElement.getText();
             console.log('Mensaje recibido:', message);
             expect(message).toContain('Categoría creada');
+            await waitForAlertToDisappear(driver);
         } catch (error) {
             console.error('Error en la prueba de creación de categoría:', error);
             throw error;
@@ -120,10 +133,12 @@ describe('Pruebas de UI para Categorías', () => {
             await name.sendKeys(newCategory.name);  
             await description.sendKeys(newCategory.description);
             await driver.findElement(By.css(SELECTORS.submitButton)).click();    
-            const alertElement = await driver.findElement(By.css(SELECTORS.alertMessage));
+
+            const alertElement = await waitForAlert(driver);
             const message = await alertElement.getText();
             console.log('Mensaje de error recibido:', message);
             expect(message).toContain('Error al crear la categoría');
+            await waitForAlertToDisappear(driver);
         } catch (error) {
             console.error('Error en la prueba de nombre duplicado:', error);
             throw error;
@@ -138,17 +153,18 @@ describe('Pruebas de UI para Categorías', () => {
             expect(categoryName).toBe(newCategory.name);
 
             await categoryRow.findElement(By.css(SELECTORS.editButton)).click();
-            const modal = await driver.wait(until.elementIsVisible(driver.findElement(By.css(SELECTORS.editModal))), 5000);            
+            const modal = await driver.wait(until.elementIsVisible(driver.findElement(By.css(SELECTORS.editModal))), 10000); 
+            await sleep(1000);          
             await driver.findElement(By.css(SELECTORS.editCategoryName)).clear();
             await driver.findElement(By.css(SELECTORS.editCategoryName)).sendKeys('Categoría editada');
             await driver.findElement(By.css(SELECTORS.editCategoryDescription)).clear();
             await driver.findElement(By.css(SELECTORS.editCategoryDescription)).sendKeys('Descripción editada');
             await driver.findElement(By.css(`${SELECTORS.editModal} button[type="submit"]`)).click();
-            await waitForAlert(driver);
-            const alertElement = await driver.findElement(By.css(SELECTORS.alertMessage));
+            const alertElement = await waitForAlert(driver);
             const message = await alertElement.getText();
             console.log('Mensaje recibido:', message);
             expect(message).toContain('Categoría actualizada');
+            await waitForAlertToDisappear(driver);
         } catch (error) {
             console.error('Error en la prueba de actualización de categoría:', error);
             throw error;
@@ -165,15 +181,15 @@ describe('Pruebas de UI para Categorías', () => {
                 until.elementIsVisible(driver.findElement(By.css(SELECTORS.deleteModal))),
                 10000
             );
-            console.log("Modal de eliminación visible");
+           
             
             await driver.sleep(1000);
             await driver.findElement(By.css(SELECTORS.confirmButton)).click();
-            await waitForAlert(driver);
-            const alertElement = await driver.findElement(By.css(SELECTORS.alertMessage));
+            const alertElement = await waitForAlert(driver);
             const message = await alertElement.getText();
             console.log('Mensaje recibido:', message);
             expect(message).toContain('Categoría eliminada');
+            await waitForAlertToDisappear(driver);
         } catch (error) {
             console.error('Error en la prueba de eliminación de categoría:', error);
             throw error;
@@ -189,10 +205,11 @@ describe('Pruebas de UI para Categorías', () => {
             await name.sendKeys(longName); 
             await description.sendKeys(newCategory.description);
             await driver.findElement(By.css(SELECTORS.submitButton)).click();
-            const alertElement = await driver.findElement(By.css(SELECTORS.alertMessage));
+            const alertElement = await waitForAlert(driver);
             const message = await alertElement.getText();
             console.log('Mensaje de error recibido:', message);
             expect(message).toContain('Error al crear la categoría');
+            await waitForAlertToDisappear(driver);
         } catch (error) {
             console.error('Error en la prueba de longitud del nombre:', error);
             throw error;
@@ -210,10 +227,11 @@ describe('Pruebas de UI para Categorías', () => {
             const longDescription = 'Descripción con más de doscientos cincuenta y cinco caracteres en su descripción'.repeat(5).substring(0, 256);
             await description.sendKeys(longDescription);
             await driver.findElement(By.css(SELECTORS.submitButton)).click();    
-            const alertElement = await driver.findElement(By.css(SELECTORS.alertMessage));
+            const alertElement = await waitForAlert(driver);
             const message = await alertElement.getText();
             console.log('Mensaje de error recibido:', message);
             expect(message).toContain('Error al crear la categoría');
+            await waitForAlertToDisappear(driver);
         } catch (error) {
             console.error('Error en la prueba de longitud de la descripción:', error);
             throw error;
