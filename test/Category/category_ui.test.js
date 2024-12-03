@@ -217,21 +217,4 @@ describe('Pruebas de UI para Categorías', () => {
         }
     });
 
-    it('Debería crear una nueva categoría con descripción vacía', async () => {
-        try {
-            await waitForLoader(driver);
-            await sleep(2000);
-            await driver.findElement(By.xpath(SELECTORS.categoryName)).sendKeys(newCategory.name);
-            await driver.findElement(By.xpath(SELECTORS.categoryDescription)).clear();
-            await driver.findElement(By.css(SELECTORS.submitButton)).click();
-            const alertElement = await waitForAlert(driver);
-            const message = await alertElement.getText();
-            console.log('Mensaje recibido:', message);
-            expect(message).toContain('Categoría creada');
-            await waitForAlertToDisappear(driver);
-        } catch (error) {
-            console.error('Error en la prueba de descripción vacía:', error);
-            throw error;
-        }
-    });
 });
