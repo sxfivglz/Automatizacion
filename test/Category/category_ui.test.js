@@ -82,8 +82,9 @@ async function createDriver() {
     try {
         const service = new chrome.ServiceBuilder(chromedriver.path);
         const options = new chrome.Options();
-        options.addArguments('--headless', '--no-sandbox', '--disable-gpu');
-        driver = await new Builder()
+        options.addArguments('--headless', '--no-sandbox', '--disable-dev-shm-usage');
+
+            await new Builder()
             .forBrowser(Browser.CHROME)
             .setChromeService(service)
             .setChromeOptions(options)
