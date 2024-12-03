@@ -141,5 +141,24 @@ describe('Pruebas del CategoryController', () => {
     expect(response.status).toBe(500);
     expect(response.body).toEqual({ message: 'Error al eliminar categoría' });
   });
+  test('Debe crear 5 categorías correctamente', async () => {
+    const newCategories = [
+      { name: 'Furniture' },
+      { name: 'Electronics' },
+      { name: 'Clothing' },
+      { name: 'Home Appliances' },
+      { name: 'Books' }
+    ];
+    const createdCategories = newCategories.map((category, index) => ({ id: index + 1, ...category }));
+    categoryService.createCategory.mockImplementation((category) => {
+      const index = newCategories.findIndex((c) => c.name === category.name);
+      return Promise.resolve(createdCategories[index]);
+    });
 
+    const response = await request(app).post('/api/categories/bulk').send(newCategories);
+    
+    expect(response.status).toBe(201);
+    expect(response.body).toEqual(createdCategories);
+    expect(categoryService.createCategory).toHaveBeenCalledTimes(5);
+  });
 });
