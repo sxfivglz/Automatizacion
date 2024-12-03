@@ -1,6 +1,6 @@
 jest.mock('../../repositories/ProductRepository');
 const ProductRepository = require('../../repositories/ProductRepository');
-const ProductService = require('../services/ProductService');
+const ProductService = require('../../services/productService');
 
 
 describe('Pruebas de ProductService', () => {
