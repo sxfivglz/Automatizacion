@@ -110,6 +110,7 @@ describe('Pruebas de UI para Categorías', () => {
     it('Debería crear una nueva categoría', async () => {
         try {
             await waitForLoader(driver);
+            await sleep(2000);
             await driver.findElement(By.xpath(SELECTORS.categoryName)).sendKeys(newCategory.name);
             await driver.findElement(By.xpath(SELECTORS.categoryDescription)).sendKeys(newCategory.description);
             await driver.findElement(By.css(SELECTORS.submitButton)).click();
@@ -127,6 +128,7 @@ describe('Pruebas de UI para Categorías', () => {
     it('Debería mostrar un error si el nombre de la categoría ya existe', async () => {
         try {
             await waitForLoader(driver);
+            await sleep(2000);
             await driver.findElement(By.xpath(SELECTORS.categoryName)).sendKeys(newCategory.name);
             await driver.findElement(By.xpath(SELECTORS.categoryDescription)).sendKeys(newCategory.description);
             await driver.findElement(By.css(SELECTORS.submitButton)).click();    
@@ -144,7 +146,7 @@ describe('Pruebas de UI para Categorías', () => {
     it('Debería actualizar una categoría existente', async () => {
         try {
             await waitForLoader(driver);
-
+            await sleep(2000);
             const categoryRow = await driver.findElement(By.xpath(`//tr[td[normalize-space(text())='${newCategory.name}']]`));
             const categoryName = await categoryRow.findElement(By.xpath('td[2]')).getText();
             expect(categoryName).toBe(newCategory.name);
@@ -175,7 +177,7 @@ describe('Pruebas de UI para Categorías', () => {
     it('Debería eliminar una categoría', async () => {
         try {
             await waitForLoader(driver);
-            
+            await sleep(2000);
             const categoryRow = await driver.findElement(By.xpath(`//tr[td[normalize-space(text())='Categoría editada']]`));
             await categoryRow.findElement(By.css(SELECTORS.deleteButton)).click();
             const deleteModal = await driver.wait(
@@ -198,7 +200,9 @@ describe('Pruebas de UI para Categorías', () => {
 
     it('Debería mostrar un error si el nombre supera los 50 caracteres', async () => {
         try {
+
             await waitForLoader(driver);    
+            await sleep(2000);
             await driver.findElement(By.xpath(SELECTORS.categoryName)).sendKeys('Categoría con más de cincuenta caracteres en su nombre que supera el límite de caracteres permitidos en el campo');
             await driver.findElement(By.xpath(SELECTORS.categoryDescription)).sendKeys(newCategory.description);
 
