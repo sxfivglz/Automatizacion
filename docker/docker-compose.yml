@@ -14,7 +14,7 @@ services:
       - "3000:3000"  # Exponer el puerto de la aplicación
     depends_on:
       - mysql
-
+    shm_size: '5gb'
     #entrypoint: [ "npm", "start"]
 
   mysql:
@@ -26,8 +26,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     ports:
       - "3309:3306"  # Mapeo del puerto 3309 del host al 3306 del contenedor de MySQL
-    volumes:
-      - mysql_data:/var/lib/mysql  # Persistir los datos de la base de datos
+    
 
 volumes:
   mysql_data: 
