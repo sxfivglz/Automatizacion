@@ -14,7 +14,7 @@ services:
       - "3000:3000"  # Exponer el puerto de la aplicación
     depends_on:
       - mysql
-    entrypoint: [ "npm", "start"]
+    #entrypoint: [ "npm", "start"]
 
   mysql:
     image: mariadb:10.5  # Usando la imagen oficial de MariaDB

@@ -1,4 +1,4 @@
-jest.mock('../../services/ProductService'); 
+jest.mock('../../services/productService'); 
 const request = require('supertest');
 const app = require('../../app'); 
 const ProductService = require('../../services/productService');
