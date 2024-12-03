@@ -1,12 +1,28 @@
 # Etapa 1: Clonar repositorio
-FROM alpine AS linux
-RUN apk add --no-cache git && \
+FROM ubuntu:20.04 AS linux
+RUN apt-get update && apt-get install -y git && \
     git clone -b main https://github.com/sxfivglz/Automatizacion /app
 
 # Etapa 2: Construir aplicación
-FROM node:20-alpine AS base
+FROM node:20 AS base
 WORKDIR /usr/src/app
 COPY --from=linux /app /usr/src/app
-RUN npm install
+
+# Instalar dependencias del sistema y de Node.js
+RUN apt-get update && apt-get install -y gnupg2 && \
+    apt-get install -y mariadb-client && \ 
+    apt-get install -y netcat-openbsd && \
+    npm install
+
+    RUN apt-get install -y wget
+    RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \ 
+        && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+    RUN apt-get update && apt-get -y install google-chrome-stable
+
+
+
+# Exponer el puerto de la aplicación
 EXPOSE 3000
-CMD ["npm", "start"]
+
+# Comando para iniciar la aplicación y ejecutar pruebas
+CMD ["sh", "-c", "npm start & npx jest"]

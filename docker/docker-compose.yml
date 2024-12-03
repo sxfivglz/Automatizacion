@@ -6,26 +6,27 @@ services:
     environment:
       - DB_HOST=mysql
       - DB_USER=root
-      - DB_PASSWORD=
+      - DB_PASSWORD=  # Si tienes contraseña para la base de datos, añádela aquí
       - DB_NAME=automatizacion
-      - DB_PORT=3308
+      - DB_PORT=3306  # Puerto mapeado de MySQL en el host
       - PORT_APP=3000
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Exponer el puerto de la aplicación
     depends_on:
       - mysql
+    entrypoint: [ "npm", "start"]
 
   mysql:
-    image: mysql:8.0
+    image: mariadb:10.5  # Usando la imagen oficial de MariaDB
     container_name: mysql
     environment:
+      MYSQL_ROOT_PASSWORD: ''  # Si no estás usando contraseña, dejar vacío
       MYSQL_DATABASE: automatizacion
-      MYSQL_PASSWORD: ''
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     ports:
-      - "3308:3306"
+      - "3309:3306"  # Mapeo del puerto 3309 del host al 3306 del contenedor de MySQL
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql  # Persistir los datos de la base de datos
 
 volumes:
-  mysql_data:
+  mysql_data:  # Volumen para persistir la base de datos
