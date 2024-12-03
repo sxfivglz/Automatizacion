@@ -25,21 +25,19 @@ const newCategory = {
     description: 'Descripción de prueba',
 };
 
-// Función para esperar un tiempo determinado
 async function sleep(time) {
     return new Promise((resolve) => {
         setTimeout(resolve, time);
     });
 }
 
-// Espera hasta que aparezca una alerta
-async function waitForAlert(driver, timeout = 10000) {
+async function waitForAlert(driver) {
     try {
         const alertElement = await driver.wait(
             until.elementLocated(By.css(SELECTORS.alertMessage)),
-            timeout // Tiempo de espera extendido
+            8000
         );
-        await driver.wait(until.elementIsVisible(alertElement), timeout); // Esperar a que sea visible
+        await driver.wait(until.elementIsVisible(alertElement), 5000);
         return alertElement;
     } catch (error) {
         console.error('No se encontró el mensaje de alerta:', error);
@@ -47,36 +45,29 @@ async function waitForAlert(driver, timeout = 10000) {
     }
 }
 
-// Espera hasta que la alerta desaparezca
-async function waitForAlertToDisappear(driver, timeout = 10000) {
+async function waitForAlertToDisappear(driver) {
     try {
         await driver.wait(
             until.stalenessOf(driver.findElement(By.css(SELECTORS.alertMessage))),
-            timeout // Tiempo extendido para esperar que desaparezca
+            8000
         );
     } catch (error) {
         console.error('El mensaje de alerta no desapareció:', error);
     }
 }
 
-// Espera hasta que el loader desaparezca
-async function waitForLoader(driver, timeout = 15000) { // Incrementando el tiempo de espera
+async function waitForLoader(driver) {
     let visibleLoader = true;
-    const endTime = Date.now() + timeout; // Tiempo máximo para esperar el loader
-    while (visibleLoader && Date.now() < endTime) {
+    while (visibleLoader) {
         try {
             await driver.findElement(By.css(SELECTORS.loader));
-            await sleep(2000); // Incrementar la espera entre intentos
+            await sleep(1000);
         } catch (error) {
             visibleLoader = false;
         }
     }
-    if (visibleLoader) {
-        console.warn("El loader no desapareció dentro del tiempo esperado");
-    }
 }
 
-// Función para crear el driver de Selenium
 async function createDriver() {
     let driver;
     try {
@@ -114,10 +105,8 @@ describe('Pruebas de UI para Categorías', () => {
     it('Debería crear una nueva categoría', async () => {
         try {
             await waitForLoader(driver);
-            const name = await driver.findElement(By.xpath(SELECTORS.categoryName));
-            const description = await driver.findElement(By.xpath(SELECTORS.categoryDescription));
-            await name.sendKeys(newCategory.name);
-            await description.sendKeys(newCategory.description);
+            await driver.findElement(By.xpath(SELECTORS.categoryName)).sendKeys(newCategory.name);
+            await driver.findElement(By.xpath(SELECTORS.categoryDescription)).sendKeys(newCategory.description);
             await driver.findElement(By.css(SELECTORS.submitButton)).click();
             const alertElement = await waitForAlert(driver); 
             const message = await alertElement.getText();
@@ -132,19 +121,15 @@ describe('Pruebas de UI para Categorías', () => {
 
     it('Debería mostrar un error si el nombre de la categoría ya existe', async () => {
         try {
-            await waitForLoader(driver, 15000);
-    
-            const name = await driver.findElement(By.xpath(SELECTORS.categoryName));
-            const description = await driver.findElement(By.xpath(SELECTORS.categoryDescription));               
-            await name.sendKeys(newCategory.name);  
-            await description.sendKeys(newCategory.description);
+            await waitForLoader(driver);
+            await driver.findElement(By.xpath(SELECTORS.categoryName)).sendKeys(newCategory.name);
+            await driver.findElement(By.xpath(SELECTORS.categoryDescription)).sendKeys(newCategory.description);
             await driver.findElement(By.css(SELECTORS.submitButton)).click();    
-
-            const alertElement = await waitForAlert(driver, 15000); // Espera más larga
+            const alertElement = await waitForAlert(driver);
             const message = await alertElement.getText();
             console.log('Mensaje de error recibido:', message);
             expect(message).toContain('Error al crear la categoría');
-            await waitForAlertToDisappear(driver, 15000); // Espera más larga
+            await waitForAlertToDisappear(driver);
         } catch (error) {
             console.error('Error en la prueba de nombre duplicado:', error);
             throw error;
@@ -175,7 +160,7 @@ describe('Pruebas de UI para Categorías', () => {
             const message = await alertElement.getText();
             console.log('Mensaje recibido:', message);
             expect(message).toContain('Categoría actualizada');
-            await waitForAlertToDisappear(driver); 
+         
         } catch (error) {
             console.error('Error en la prueba de actualización de categoría:', error);
             throw error;
@@ -209,17 +194,14 @@ describe('Pruebas de UI para Categorías', () => {
     it('Debería mostrar un error si el nombre supera los 50 caracteres', async () => {
         try {
             await waitForLoader(driver);    
-            const nameElement = await driver.findElement(By.xpath(SELECTORS.categoryName));
-            const descriptionElement = await driver.findElement(By.xpath(SELECTORS.categoryDescription));        
-            const longName = 'Categoría con más de cincuenta caracteres en su nombre'.substring(0, 51);
-            await nameElement.sendKeys(longName); 
-            await descriptionElement.sendKeys(newCategory.description);
+            await driver.findElement(By.xpath(SELECTORS.categoryName)).sendKeys('Categoría con más de cincuenta caracteres en su nombre que supera el límite de caracteres permitidos en el campo');
+            await driver.findElement(By.xpath(SELECTORS.categoryDescription)).sendKeys(newCategory.description);
+
             await driver.findElement(By.css(SELECTORS.submitButton)).click();
-            const alertElement = await waitForAlert(driver, 15000); // Espera más larga
+            const alertElement = await waitForAlert(driver);
             const message = await alertElement.getText();
             console.log('Mensaje de error recibido:', message);
             expect(message).toContain('Error al crear la categoría');
-            await waitForAlertToDisappear(driver, 15000); // Espera más larga
         } catch (error) {
             console.error('Error en la prueba de longitud del nombre:', error);
             throw error;
