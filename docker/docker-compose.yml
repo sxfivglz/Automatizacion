@@ -6,16 +6,18 @@ services:
     environment:
       - DB_HOST=mysql
       - DB_USER=root
-      - DB_PASSWORD=  # Si tienes contraseña para la base de datos, añádela aquí
+      - DB_PASSWORD=  
       - DB_NAME=automatizacion
-      - DB_PORT=3306  # Puerto mapeado de MySQL en el host
+      - DB_PORT=3306 
       - PORT_APP=3000
     ports:
       - "3000:3000"  # Exponer el puerto de la aplicación
     depends_on:
       - mysql
     shm_size: '5gb'
+    
     #entrypoint: [ "npm", "start"]
+    
 
   mysql:
     image: mariadb:10.5  # Usando la imagen oficial de MariaDB
