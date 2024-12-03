@@ -43,8 +43,6 @@ RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/11
 # Copiar wait-for-it.sh al contenedor
 COPY wait-for-it.sh /usr/src/app/wait-for-it.sh
 RUN chmod +x /usr/src/app/wait-for-it.sh
-COPY init-db.sh /usr/src/app/init-db.sh
-RUN chmod +x /usr/src/app/init-db.sh
 
 
 # Exponer el puerto de la aplicación
