@@ -110,17 +110,17 @@ describe('Pruebas de UI de Productos', () => {
         }
     });
 
-    afterEach(async () => {
+    // afterEach(async () => {
  
-        await driver.navigate().refresh();
+    //     await driver.navigate().refresh();
         
-        await waitForLoader(driver);
-    });
+    //     await waitForLoader(driver);
+    // });
 
     it('Debería poder crear un producto', async () => {
         try {
             await waitForLoader(driver);
-            await sleep(2000);
+            
             await driver.findElement(By.xpath(SELECTORS.productName)).sendKeys(newProduct.name);
             await driver.findElement(By.xpath(SELECTORS.productPrice)).sendKeys(newProduct.price);
             await driver.findElement(By.xpath(SELECTORS.productStock)).sendKeys(newProduct.stock);
@@ -144,7 +144,7 @@ describe('Pruebas de UI de Productos', () => {
     it('Debería mostrar un error si el nombre del producto ya existe', async () => {
         try {
             await waitForLoader(driver);
-            await sleep(2000);
+            
             await driver.findElement(By.xpath(SELECTORS.productName)).sendKeys(newProduct.name);
             await driver.findElement(By.xpath(SELECTORS.productPrice)).sendKeys(newProduct.price);
             await driver.findElement(By.xpath(SELECTORS.productStock)).sendKeys(newProduct.stock);
@@ -170,7 +170,7 @@ describe('Pruebas de UI de Productos', () => {
     it('Debería mostrar un error si se intenta actualizar un producto con valores negativos en el stock', async () => {
         try {
             await waitForLoader(driver);
-            await sleep(2000);
+            
             const productRow = await driver.findElement(By.xpath(`//tr[td[normalize-space(text())='${newProduct.name}']]`));
             await productRow.findElement(By.css(SELECTORS.editButton)).click();
 
@@ -201,7 +201,7 @@ describe('Pruebas de UI de Productos', () => {
         try {
 
             await waitForLoader(driver);
-            await sleep(2000);
+            
             const productRow = await driver.findElement(By.xpath(`//tr[td[normalize-space(text())='${newProduct.name}']]`));
             await productRow.findElement(By.css(SELECTORS.editButton)).click();
 
@@ -233,7 +233,7 @@ describe('Pruebas de UI de Productos', () => {
     it('Debería mostrar un error si se intenta actualizar un producto con valores muy altos en stock', async () => {
         try {
             await waitForLoader(driver);
-            await sleep(2000);
+            
             const productRow = await driver.findElement(By.xpath(`//tr[td[normalize-space(text())='${newProduct.name}']]`));
             await productRow.findElement(By.css(SELECTORS.editButton)).click();
 
@@ -265,7 +265,7 @@ describe('Pruebas de UI de Productos', () => {
     it('Debería mostrar un error si se intenta actualizar un producto con nombre de más de 50 caracteres', async () => {	
         try {
             await waitForLoader(driver);
-            await sleep(2000);
+            
             const productRow = await driver.findElement(By.xpath(`//tr[td[normalize-space(text())='${newProduct.name}']]`));
             await productRow.findElement(By.css(SELECTORS.editButton)).click();
             const modal = await driver.wait(
@@ -304,7 +304,7 @@ describe('Pruebas de UI de Productos', () => {
     it('Debería actualizar un producto existente', async () => {
         try {
             await waitForLoader(driver);
-            await sleep(2000);
+            
             const productRow = await driver.findElement(By.xpath(`//tr[td[normalize-space(text())='${newProduct.name}']]`));
             const productName = await productRow.findElement(By.xpath('td[2]')).getText();
             expect(productName).toBe(newProduct.name);
@@ -344,7 +344,7 @@ describe('Pruebas de UI de Productos', () => {
     it('Debería eliminar un producto', async () => {
         try {
             await waitForLoader(driver);
-            await sleep(2000);
+            
             const productRow = await driver.findElement(By.xpath(`//tr[td[normalize-space(text())='Producto actualizado']]`));
             await productRow.findElement(By.css(SELECTORS.deleteButton)).click();
 
