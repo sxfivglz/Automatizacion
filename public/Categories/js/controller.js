@@ -98,7 +98,7 @@ const app = Vue.createApp({
             setTimeout(() => {
                 this.message = '';
                 this.messageType = '';
-            }, 5000);
+            }, 3000);
         }
     },
     mounted() {
