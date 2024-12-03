@@ -82,13 +82,7 @@ async function createDriver() {
     try {
         const service = new chrome.ServiceBuilder(chromedriver.path);
         const options = new chrome.Options();
-        options.addArguments('--headless', '--no-sandbox', '--disable-dev-shm-usage');
-
-            await new Builder()
-            .forBrowser(Browser.CHROME)
-            .setChromeService(service)
-            .setChromeOptions(options)
-            .build();
+        options.addArguments('--headless=new', '--headless', '--no-sandbox', '--window-size=1920x1080'); 
         await driver.get(URL);
         await driver.manage().window().maximize();
         await waitForLoader(driver);  // Esperar a que cargue el loader
