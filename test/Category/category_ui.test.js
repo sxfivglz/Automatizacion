@@ -82,7 +82,7 @@ async function createDriver() {
     try {
         const service = new chrome.ServiceBuilder(chromedriver.path);
         const options = new chrome.Options();
-        options.addArguments('--headless=new', '--headless', '--no-sandbox', '--window-size=1920x1080'); 
+        options.addArguments('--headless', '--no-sandbox', '--disable-gpu');
         driver = await new Builder()
             .forBrowser(Browser.CHROME)
             .setChromeService(service)
