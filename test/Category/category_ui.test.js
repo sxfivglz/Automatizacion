@@ -18,6 +18,7 @@ const SELECTORS = {
     editCategoryName: '#editCategoryName',
     editCategoryDescription: '#editCategoryDescription',
     alertMessage: '.alert',
+    closeButton: '.alert .close',
 };
 
 const newCategory = {
