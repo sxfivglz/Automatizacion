@@ -83,9 +83,14 @@ async function createDriver() {
         const service = new chrome.ServiceBuilder(chromedriver.path);
         const options = new chrome.Options();
         options.addArguments('--headless=new', '--headless', '--no-sandbox', '--window-size=1920x1080'); 
+        driver = await new Builder()
+            .forBrowser(Browser.CHROME)
+            .setChromeService(service)
+            .setChromeOptions(options)
+            .build();
         await driver.get(URL);
         await driver.manage().window().maximize();
-        await waitForLoader(driver);  // Esperar a que cargue el loader
+        await waitForLoader(driver);
         return driver;
     } catch (error) {
         console.error('Error al iniciar Selenium:', error.message);
