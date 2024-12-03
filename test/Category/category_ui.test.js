@@ -113,17 +113,17 @@ describe('Pruebas de UI para Categorías', () => {
 
     it('Debería crear una nueva categoría', async () => {
         try {
-            await waitForLoader(driver, 15000); // Espera más larga
+            await waitForLoader(driver);
             const name = await driver.findElement(By.xpath(SELECTORS.categoryName));
             const description = await driver.findElement(By.xpath(SELECTORS.categoryDescription));
             await name.sendKeys(newCategory.name);
             await description.sendKeys(newCategory.description);
             await driver.findElement(By.css(SELECTORS.submitButton)).click();
-            const alertElement = await waitForAlert(driver, 15000); // Espera más larga
+            const alertElement = await waitForAlert(driver); 
             const message = await alertElement.getText();
             console.log('Mensaje recibido:', message);
             expect(message).toContain('Categoría creada');
-            await waitForAlertToDisappear(driver, 15000); // Espera más larga
+            await waitForAlertToDisappear(driver); 
         } catch (error) {
             console.error('Error en la prueba de creación de categoría:', error);
             throw error;
@@ -153,7 +153,7 @@ describe('Pruebas de UI para Categorías', () => {
 
     it('Debería actualizar una categoría existente', async () => {
         try {
-            await waitForLoader(driver, 15000);
+            await waitForLoader(driver);
 
             const categoryRow = await driver.findElement(By.xpath(`//tr[td[normalize-space(text())='${newCategory.name}']]`));
             const categoryName = await categoryRow.findElement(By.xpath('td[2]')).getText();
@@ -167,11 +167,11 @@ describe('Pruebas de UI para Categorías', () => {
             await driver.findElement(By.css(SELECTORS.editCategoryDescription)).clear();
             await driver.findElement(By.css(SELECTORS.editCategoryDescription)).sendKeys('Descripción editada');
             await driver.findElement(By.css(`${SELECTORS.editModal} button[type="submit"]`)).click();
-            const alertElement = await waitForAlert(driver, 15000); // Espera más larga
+            const alertElement = await waitForAlert(driver); 
             const message = await alertElement.getText();
             console.log('Mensaje recibido:', message);
             expect(message).toContain('Categoría actualizada');
-            await waitForAlertToDisappear(driver, 15000); // Espera más larga
+            await waitForAlertToDisappear(driver); 
         } catch (error) {
             console.error('Error en la prueba de actualización de categoría:', error);
             throw error;
@@ -180,7 +180,7 @@ describe('Pruebas de UI para Categorías', () => {
 
     it('Debería eliminar una categoría', async () => {
         try {
-            await waitForLoader(driver, 15000);
+            await waitForLoader(driver);
             
             const categoryRow = await driver.findElement(By.xpath(`//tr[td[normalize-space(text())='Categoría editada']]`));
             await categoryRow.findElement(By.css(SELECTORS.deleteButton)).click();
@@ -191,11 +191,11 @@ describe('Pruebas de UI para Categorías', () => {
             
             await driver.sleep(1000);
             await driver.findElement(By.css(SELECTORS.confirmButton)).click();
-            const alertElement = await waitForAlert(driver, 15000); // Espera más larga
+            const alertElement = await waitForAlert(driver); 
             const message = await alertElement.getText();
             console.log('Mensaje recibido:', message);
             expect(message).toContain('Categoría eliminada');
-            await waitForAlertToDisappear(driver, 15000); // Espera más larga
+            await waitForAlertToDisappear(driver); 
         } catch (error) {
             console.error('Error en la prueba de eliminación de categoría:', error);
             throw error;
@@ -204,12 +204,12 @@ describe('Pruebas de UI para Categorías', () => {
 
     it('Debería mostrar un error si el nombre supera los 50 caracteres', async () => {
         try {
-            await waitForLoader(driver, 15000);    
-            const name = await driver.findElement(By.xpath(SELECTORS.categoryName));
-            const description = await driver.findElement(By.xpath(SELECTORS.categoryDescription));        
+            await waitForLoader(driver);    
+            const nameElement = await driver.findElement(By.xpath(SELECTORS.categoryName));
+            const descriptionElement = await driver.findElement(By.xpath(SELECTORS.categoryDescription));        
             const longName = 'Categoría con más de cincuenta caracteres en su nombre'.substring(0, 51);
-            await name.sendKeys(longName); 
-            await description.sendKeys(newCategory.description);
+            await nameElement.sendKeys(longName); 
+            await descriptionElement.sendKeys(newCategory.description);
             await driver.findElement(By.css(SELECTORS.submitButton)).click();
             const alertElement = await waitForAlert(driver, 15000); // Espera más larga
             const message = await alertElement.getText();
