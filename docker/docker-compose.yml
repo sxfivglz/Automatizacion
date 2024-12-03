@@ -14,6 +14,7 @@ services:
       - "3000:3000"  # Exponer el puerto de la aplicación
     depends_on:
       - mysql
+
     #entrypoint: [ "npm", "start"]
 
   mysql:
@@ -29,4 +30,4 @@ services:
       - mysql_data:/var/lib/mysql  # Persistir los datos de la base de datos
 
 volumes:
-  mysql_data:  # Volumen para persistir la base de datos
+  mysql_data: 
