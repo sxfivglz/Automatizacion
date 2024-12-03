@@ -1,7 +1,8 @@
 jest.mock('../../services/ProductService'); 
 const request = require('supertest');
 const app = require('../../app'); 
-const productService = require('../../services/ProductService');
+const ProductService = require('../services/ProductService');
+
 
 describe('Pruebas del ProductController', () => {
   afterEach(() => {

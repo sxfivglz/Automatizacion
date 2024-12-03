@@ -1,8 +1,12 @@
+require('dotenv').config();
 const { Builder, By, Key, until, Browser } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const chromedriver = require('chromedriver');
 
-const URL = 'http://localhost:3000/Categories/index.html';
+
+
+const PORT = process.env.PORT_APP; 
+const URL = `http://localhost:${PORT}/Categories/index.html`;
 const SELECTORS = {
     loader: '.loader',
     categoryName: '/html/body/div/form/div/div[1]/input',

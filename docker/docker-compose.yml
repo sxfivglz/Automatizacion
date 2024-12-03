@@ -1,22 +1,33 @@
-version: '3.8'
-
 services:
   app:
     build:
-      context: .
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=''
+      - DB_NAME=automatizacion
+      - DB_PORT=3308
+      - PORT_APP=3000
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=development
-    env_file:
-      - .env
+    
     depends_on:
-      - db
+      - mysql
+    
 
-  db:
+  mysql:
     image: mysql:8.0
-    container_name: mysql_container
+    container_name: mysql
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: automatizacion
+      MYSQL_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     ports:
-      - "3307:3306"
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
