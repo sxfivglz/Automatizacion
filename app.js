@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path'); // Asegúrate de importar 'path' aquí
 const {
   errorHandler,
   notFoundHandler,
@@ -18,6 +19,17 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
+
+app.get('/report', (req, res) => {
+  const reportPath = path.join('O:', 'UTT', 'Automatizacion', 'test', 'Reports', 'report.html');
+
+  res.sendFile(reportPath, (err) => {
+    if (err) {
+      console.error('Error al servir el archivo:', err);
+      res.status(500).send('Error al cargar el reporte');
+    }
+  });
+});
 
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
@@ -55,5 +67,4 @@ async function createDatabaseIfNotExists() {
   });
 }
 
-// Exporta solo la aplicación sin iniciar el servidor
 module.exports = app;

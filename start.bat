@@ -4,4 +4,3 @@ start /B xampp_start.exe
 timeout /t 3 /nobreak
 cd /d O:\UTT\Automatizacion
 npm start
-start cmd /k "cd /d O:\UTT\Automatizacion && npx jest"

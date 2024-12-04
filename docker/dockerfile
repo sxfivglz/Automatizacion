@@ -1,9 +1,8 @@
-# Etapa 1: Clonar repositorio
+
 FROM ubuntu:20.04 AS linux
 RUN apt-get update && apt-get install -y git && \
     git clone -b main https://github.com/sxfivglz/Automatizacion /app
 
-# Etapa 2: Construir aplicación
 FROM node:20 AS base
 WORKDIR /usr/src/app
 COPY --from=linux /app /usr/src/app
@@ -22,13 +21,11 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
     unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/ && \
     rm /tmp/chromedriver.zip
 
-# Copiar scripts al contenedor
+
 COPY wait-for-it.sh /usr/src/app/wait-for-it.sh
 COPY init-db.sh /usr/src/app/init-db.sh
 RUN chmod +x /usr/src/app/wait-for-it.sh /usr/src/app/init-db.sh
 
-# Exponer el puerto de la aplicación
 EXPOSE 3000
 
-# Comando para iniciar la aplicación y ejecutar pruebas
 CMD ["/usr/src/app/wait-for-it.sh", "mysql:3306", "--", "/bin/bash", "-c", "/usr/src/app/init-db.sh && npx concurrently \"npm start\" \"npx jest --watchAll\""]
