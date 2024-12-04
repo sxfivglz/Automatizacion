@@ -4,11 +4,12 @@ services:
       context: ..
       dockerfile: Docker/Dockerfile
     environment:
+      - DOCKER_ENV=true
       - DB_HOST=mysql
       - DB_USER=root
-      - DB_PASSWORD=  
+      - DB_PASSWORD=
       - DB_NAME=automatizacion
-      - DB_PORT=3306 
+      - DB_PORT=3306
       - PORT_APP=3000
     ports:
       - "3000:3000"
@@ -18,14 +19,11 @@ services:
 
 
   mysql:
-    image: mariadb:10.5 
+    image: mariadb:10.5
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: '' 
+      MYSQL_ROOT_PASSWORD: ''
       MYSQL_DATABASE: automatizacion
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     ports:
-      - "3309:3306"  
-
-volumes:
-  mysql_data: 
+      - "3309:3306"
