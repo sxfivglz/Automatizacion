@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
 app.get('/report', (req, res) => {
-  const reportPath = path.join('O:', 'UTT', 'Automatizacion', 'test', 'Reports', 'report.html');
+  const reportPath = path.join(__dirname, 'test', 'Reports', 'report.html');
 
   res.sendFile(reportPath, (err) => {
     if (err) {
