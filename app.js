@@ -1,6 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const path = require('path'); // Asegúrate de importar 'path' aquí
+const path = require('path');
 const {
   errorHandler,
   notFoundHandler,
@@ -9,8 +9,8 @@ const {
 } = require('./middleware/handler');
 const productRoutes = require('./routes/productRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
-const sequelize = require('./config/database'); 
-const mysql = require('mysql2'); 
+const sequelize = require('./config/database');
+const mysql = require('mysql2');
 
 unhandledRejectionHandler();
 uncaughtExceptionHandler();
@@ -20,8 +20,19 @@ const app = express();
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
+// Detectar si estamos en Docker o en el entorno local
+const isDocker = process.env.DOCKER_ENV === 'true'; // Define una variable de entorno para identificar el entorno
+
 app.get('/report', (req, res) => {
-  const reportPath = path.join(__dirname, 'test', 'Reports', 'report.html');
+  let reportPath;
+
+  // Si estamos en Docker, usamos la ruta interna del contenedor
+  if (isDocker) {
+    reportPath = path.resolve('/usr/src/app/test/Reports', 'report.html');
+  } else {
+    // Si estamos en el entorno local, usamos la ruta relativa a la estructura local
+    reportPath = path.join(__dirname, 'test', 'Reports', 'report.html');
+  }
 
   res.sendFile(reportPath, (err) => {
     if (err) {
