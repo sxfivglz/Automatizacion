@@ -11,25 +11,21 @@ services:
       - DB_PORT=3306 
       - PORT_APP=3000
     ports:
-      - "3000:3000"  # Exponer el puerto de la aplicación
+      - "3000:3000"
     depends_on:
       - mysql
     shm_size: '5gb'
-    
-    #entrypoint: [ "npm", "start"]
-    
+
 
   mysql:
-    image: mariadb:10.5  # Usando la imagen oficial de MariaDB
+    image: mariadb:10.5 
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ''  # Si no estás usando contraseña, dejar vacío
+      MYSQL_ROOT_PASSWORD: '' 
       MYSQL_DATABASE: automatizacion
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     ports:
-      - "3309:3306"  # Mapeo del puerto 3309 del host al 3306 del contenedor de MySQL
-    #volumes:
-     # - mysql_data:/var/lib/mysql  # Persistir los datos de la base de datos
+      - "3309:3306"  
 
 volumes:
   mysql_data: 
