@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const {
@@ -9,14 +10,23 @@ const {
 } = require('./middleware/handler');
 const productRoutes = require('./routes/productRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
+const userRoutes = require('./routes/userRoutes');
 const sequelize = require('./config/database');
 const mysql = require('mysql2');
 
 unhandledRejectionHandler();
 uncaughtExceptionHandler();
 dotenv.config();
-
+const corsOptions = {
+  //Permitir que cualquier origen acceda a la API
+  origin: '*',
+  //Métodos HTTP permitidos
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //Cabeceras permitidas
+  allowedHeaders: 'Content-Type,Authorization',
+};
 const app = express();
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
@@ -44,7 +54,7 @@ app.get('/report', (req, res) => {
 
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
-
+app.use('/api/users', userRoutes);
 app.use(notFoundHandler);
 app.use(errorHandler);
 

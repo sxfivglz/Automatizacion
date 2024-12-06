@@ -11,13 +11,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "chromedriver": "^131.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-validator": "^7.2.0",
     "geckodriver": "^5.0.0",
     "joi": "^17.13.3",
     "jquery": "^3.7.1",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.4",
     "selenium-webdriver": "^4.27.0",
     "sequelize": "^6.37.5"
